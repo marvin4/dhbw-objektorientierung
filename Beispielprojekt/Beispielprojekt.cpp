@@ -8,6 +8,7 @@
 #include <iostream>
 
 #include "Vektor2d.h"
+#include "Klassen.h"
 
 // Simulationsgeschwindigkeit
 const double DT = 100.0;

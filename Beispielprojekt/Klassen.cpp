@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "Klassen.h"
 
+std::vector < Gosu::Color > farben= { Gosu::Color::BLUE,Gosu::Color::BLUE,Gosu::Color::RED,Gosu::Color::GREEN,Gosu::Color::YELLOW };
+std::vector<std::array<std::array<bool, 4>, 4>> formen = { {{true,false,false,false},{true,false,false,false},{true,false,false,false},{true,false,false,false}} };
 
 
 	uint16_t Spielfeld::hoehe() {
@@ -25,7 +27,7 @@
 	}
 
 	bool AktiverSpielstein::platzieren() {
-
+		return true;
 	}
 	AktiverSpielstein::AktiverSpielstein(AktiverSpielstein const& kopie) {
 		*this = kopie;

@@ -8,8 +8,7 @@
 
 
 
-std::vector < Gosu::Color > farben = { Gosu::Color::BLUE,Gosu::Color::BLUE,Gosu::Color::RED,Gosu::Color::GREEN,Gosu::Color::YELLOW };
-std::vector<std::array<std::array<bool, 4>, 4>> formen;
+
 const uint16_t SPIELFELD_BREITE=10;
 
 struct Feld {
