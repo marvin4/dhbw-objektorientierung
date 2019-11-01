@@ -81,18 +81,26 @@ std::vector<bool> formen = {1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0};
 		return erfolg;
 	}
 	void AktiverSpielstein::rechtsRotieren() {
-		auto kopie = this->form;
-		for (unsigned int i = 0; i < 4;i++) {
-			for (unsigned int j = 0; j < 4;j++) {
-				this->form[i][j] = kopie[3-j][i];
+		bool tmp;
+		for (unsigned int i = 0; i < 2; i++) {
+			for (unsigned int j = i; j < (3 - i); j++) {
+				tmp = this->form[i][j];
+				this->form[i][j] = this->form[j][3 - i];
+				this->form[j][3 - i] = this->form[3 - i][3 - j];
+				this->form[3 - i][3 - j] = this->form[3 - j][i];
+				this->form[3 - j][i] = tmp;
 			}
 		}
 	}
 	void AktiverSpielstein::linksRotieren() {
-		auto kopie = this->form;
-		for (unsigned int i = 0; i < 4; i++) {
-			for (unsigned int j = 0; j < 4; j++) {
-				this->form[i][j] = kopie[j][3-i];
+		bool tmp;
+		for (unsigned int j = 0; j < 2; j++) {
+			for (unsigned int i = j; i < (3-j); i++) {
+				tmp = this->form[j][i];
+				this->form[j][i] = this->form[3-i][j];
+				this->form[i][3 - j] = this->form[3 - j][3 - i];
+				this->form[3 - j][3 - i] = this->form[i][3-j];
+				this->form[i][3-j] = tmp;
 			}
 		}
 	}
