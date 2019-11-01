@@ -2,6 +2,7 @@
 #include <cstdint>
 #include <Gosu/Image.hpp>
 #include <Gosu/Graphics.hpp>
+#include <Gosu/Fwd.hpp>
 #include <ctime>
 #include <cstdlib>
 #include <array>
@@ -16,7 +17,16 @@ struct Feld {
 	Gosu::Color farbe;
 };
 struct koord {
-	uint16_t x, y;
+	unsigned int x, y;
+};
+class Spielstein {
+	
+protected:
+	std::array<std::array<bool, 4>, 4> form;
+	Gosu::Color farbe;
+public:
+	Spielstein();
+	//void draw();
 };
 class Spielfeld
 {
@@ -26,22 +36,33 @@ class Spielfeld
 	int64_t score;
 	time_t startzeit;
 	koord refpos = {0,0};//obere linke Ecke
+	//uint16_t hoehePxlSpielfeld;
+	//uint16_t hoehePxlAbschnitt;
+	//Spielstein naechsterSpielstein;
 public:
-	uint16_t hoehe();
+	unsigned int hoehe();
 	void reset();
 	double dauer();//Zeit seit start in s
-
+	bool platzbelegt(unsigned int y, unsigned int x);
+	void platziereAbschnitt(unsigned int y,unsigned int x,Gosu::Color c);
+	//bool platzieren(std::array<std::array<bool,4>,4> form,koord pos);
+	void draw(uint16_t hoehePxl);
+	//Spielstein nehmeSpielstein();
 };
-class Spielstein {
-	Gosu::Color farbe;
 
-public:
-	Spielstein();
-	void draw();
-};
+
 class AktiverSpielstein : public Spielstein {
 	koord positionAufSpielfeld;//Position von linker Ecke aus
 public:
-	AktiverSpielstein(AktiverSpielstein const& kopie);
-	bool platzieren();
+	AktiverSpielstein(AktiverSpielstein const& kopie);//nutzbar falls Spielsteine erstellt werden aber nicht direkt auf dem Spielfeld sind
+	AktiverSpielstein();
+	bool platzieren(Spielfeld& spielbrett);
+	void rechtsRotieren();
+	void linksRotieren();
+	void linksBewegen();
+	void rechtsBewegen();
+	void obenBewegen();
+	void untenBewegen();
+	void draw(uint16_t hoehePxl);
+
 };

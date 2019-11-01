@@ -17,18 +17,28 @@ class GameWindow : public Gosu::Window
 {
 public:
 	Gosu::Image bild;
+	
+
 	GameWindow()
 		: Window(800, 600)
 	{
 		set_caption("Gosu Tutorial Game mit Git");
+		hoehePxlSpielfeld = (std::min(width(), height())- (std::min(width(), height())%SPIELFELD_BREITE));
+		hoehePxlAbschnitt = (hoehePxlSpielfeld / SPIELFELD_BREITE);
+		spielfeld.reset();
 	}
-
+	uint16_t hoehePxlSpielfeld;
+	uint16_t hoehePxlAbschnitt;
+	Spielfeld spielfeld;
+	AktiverSpielstein aktiverSpielstein;
 	// wird bis zu 60x pro Sekunde aufgerufen.
 	// Wenn die Grafikkarte oder der Prozessor nicht mehr hinterherkommen,
 	// dann werden `draw` Aufrufe ausgelassen und die Framerate sinkt
 	void draw() override
 	{
-		
+		spielfeld.draw(this->hoehePxlAbschnitt);
+		aktiverSpielstein.draw(this->hoehePxlAbschnitt);
+
 	}
 
 	// Wird 60x pro Sekunde aufgerufen
