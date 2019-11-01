@@ -2,11 +2,8 @@
 #include "Klassen.h"
 
 std::vector < Gosu::Color> farben= { Gosu::Color(0xffff0000),Gosu::Color(0xff0000ff) ,Gosu::Color(0xff00ff00) ,Gosu::Color(0xffffff00)};
-//std::vector<std::array<std::array<bool, 4>, 4>> formen;
-//{{false,true,false,false},{true,true,true,false},{false,false,false,false},{false,false,false,false}}
-//std::vector<bool[4][4]> formen = {};
-//formen.push_back({false,true,false,false},{true,true,true,false},{false,false,false,false},{false,false,false,false} );
-std::vector<bool> formen = {1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,/**/1,1,0,0,1,1,0,0,0,0,0,0,0,0,0,0,/**/0,1,0,0,1,1,1,0,0,0,0,0,0,0,0,0/**/,1,1,1,0,1,0,0,0,0,0,0,0,0,0,0,0};
+std::vector<bool> formen = {1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,/**/1,1,0,0,1,1,0,0,0,0,0,0,0,0,0,0,/**/0,1,0,0,1,1,1,0,0,0,0,0,0,0,0,0/*
+						 */,1,1,1,0,1,0,0,0,0,0,0,0,0,0,0,0};
 
 	unsigned int Spielfeld::hoehe() {
 		return this->zustand.size();
@@ -32,11 +29,12 @@ std::vector<bool> formen = {1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,/**/1,1,0,0,1,1,0,0,
 		this->zustand.at(y).at(x).farbe = c;
 		this->zustand.at(y).at(x).status = true;
 	}
-	/*bool Spielfeld::platzieren(std::array<std::array<bool, 4>, 4> form, koord pos) {
-		bool erfolg = true;
+	/*void Spielfeld::platzieren(AktiverSpielstein& aktiverSpielstein) {
+		if (aktiverSpielstein.platzieren(*this)) {
 
-		return erfolg;
+		}
 	}*/
+	
 	void Spielfeld::draw(uint16_t hoehePxl) {
 		for (unsigned int y = 0; y < SPIELFELD_BREITE; y++) {
 			for (unsigned int x = 0; x < SPIELFELD_BREITE; x++) {
@@ -59,7 +57,7 @@ std::vector<bool> formen = {1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,/**/1,1,0,0,1,1,0,0,
 	bool AktiverSpielstein::platzieren(Spielfeld& spielbrett) {
 		//bool erfolg=spielbrett.platzieren(this->form, this->positionAufSpielfeld);
 
-		bool erfolg = true;//verschoben in Klasse Spielfeld
+		bool erfolg = true;
 		for (unsigned int i = 0; i < 4; i++) {
 			for (unsigned int j = 0; j < 4; j++) {
 				if (this->form[i][j] && spielbrett.platzbelegt(this->positionAufSpielfeld.y+i,this->positionAufSpielfeld.x+j)) {

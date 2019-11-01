@@ -47,6 +47,7 @@ public:
 	bool platzbelegt(unsigned int y, unsigned int x);
 	void platziereAbschnitt(unsigned int y,unsigned int x,Gosu::Color c);
 	//bool platzieren(std::array<std::array<bool,4>,4> form,koord pos);
+	//void platzieren(AktiverSpielstein& aktiverSpielstein);
 	void draw(uint16_t hoehePxl);
 	//Spielstein nehmeSpielstein();
 };
