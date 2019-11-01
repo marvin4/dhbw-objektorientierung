@@ -22,10 +22,11 @@ struct koord {
 class Spielstein {
 	
 protected:
-	std::array<std::array<bool, 4>, 4> form;
+	//std::array<std::array<bool, 4>, 4> form;
+	bool form[4][4];
 	Gosu::Color farbe;
 public:
-	Spielstein();
+	//Spielstein();
 	//void draw();
 };
 class Spielfeld

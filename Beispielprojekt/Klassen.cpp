@@ -4,8 +4,9 @@
 std::vector < Gosu::Color> farben= { Gosu::Color(0xffff0000),Gosu::Color(0xff0000ff) ,Gosu::Color(0xff00ff00) ,Gosu::Color(0xffffff00)};
 //std::vector<std::array<std::array<bool, 4>, 4>> formen;
 //{{false,true,false,false},{true,true,true,false},{false,false,false,false},{false,false,false,false}}
-std::vector<bool[4][4]> formen = {};
-
+//std::vector<bool[4][4]> formen = {};
+//formen.push_back({false,true,false,false},{true,true,true,false},{false,false,false,false},{false,false,false,false} );
+std::vector<bool> formen = {1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0};
 
 	unsigned int Spielfeld::hoehe() {
 		return this->zustand.size();
@@ -50,10 +51,10 @@ std::vector<bool[4][4]> formen = {};
 		return Spielstein();
 	}*/
 
-	Spielstein::Spielstein() {
+	/*Spielstein::Spielstein() {
 		this->farbe = farben.at(rand()%farben.size());
 		this->form = formen.at(rand() % formen.size());
-	}
+	}*/
 
 	bool AktiverSpielstein::platzieren(Spielfeld& spielbrett) {
 		//bool erfolg=spielbrett.platzieren(this->form, this->positionAufSpielfeld);
@@ -99,7 +100,13 @@ std::vector<bool[4][4]> formen = {};
 		this->positionAufSpielfeld.x = (SPIELFELD_BREITE / 2);
 		this->positionAufSpielfeld.y = (SPIELFELD_BREITE / 2);
 		this->farbe = farben.at(rand() % farben.size());
-		this->form = formen.at(rand() % formen.size());
+		unsigned int random = 16*(rand() % (formen.size()/16));
+		for (unsigned int i = 0; i < 4; i++) {
+			for (unsigned int j = 0; j < 4; j++) {
+				this->form[i][j] = formen.at(random+j+(i*4));
+			}
+		}
+		//this->form = formen.at(rand() % formen.size());
 	}
 	/*AktiverSpielstein::AktiverSpielstein(AktiverSpielstein const& kopie) {
 		*this = kopie;
