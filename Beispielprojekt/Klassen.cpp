@@ -122,4 +122,36 @@ std::vector<bool> formen = {1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0};
 			}
 		}
 	}
+	void AktiverSpielstein::linksBewegen() {
+		if (true) {
+			this->positionAufSpielfeld.x = this->positionAufSpielfeld.x - 1;
+		}
+		else {
+
+		}
+	}
+	void AktiverSpielstein::rechtsBewegen() {
+		if (true) {
+			this->positionAufSpielfeld.x = this->positionAufSpielfeld.x + 1;
+		}
+		else {
+
+		}
+	}
+	void AktiverSpielstein::obenBewegen() {
+		if (true) {
+			this->positionAufSpielfeld.y = this->positionAufSpielfeld.y - 1;
+		}
+		else {
+
+		}
+	}
+	void AktiverSpielstein::untenBewegen() {
+		if (true) {
+			this->positionAufSpielfeld.y = this->positionAufSpielfeld.y + 1;
+		}
+		else {
+
+		}
+	}
 	
