@@ -54,7 +54,7 @@ public:
 class AktiverSpielstein : public Spielstein {
 	koord positionAufSpielfeld;//Position von linker Ecke aus
 public:
-	AktiverSpielstein(AktiverSpielstein const& kopie);//nutzbar falls Spielsteine erstellt werden aber nicht direkt auf dem Spielfeld sind
+	//AktiverSpielstein(AktiverSpielstein const& kopie);//nutzbar falls Spielsteine erstellt werden aber nicht direkt auf dem Spielfeld sind
 	AktiverSpielstein();
 	bool platzieren(Spielfeld& spielbrett);
 	void rechtsRotieren();

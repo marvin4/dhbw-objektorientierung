@@ -1,10 +1,10 @@
 #include "stdafx.h"
 #include "Klassen.h"
 
-std::vector < Gosu::Color > farben= { Gosu::Color::BLUE,Gosu::Color::BLUE,Gosu::Color::RED,Gosu::Color::GREEN,Gosu::Color::YELLOW };
-std::vector<std::array<std::array<bool, 4>, 4>> formen({  {{true,false,false,false},{true,false,false,false},{true,false,false,false},{true,false,false,false}},
+std::vector < Gosu::Color> farben= { Gosu::Color(0xffff0000),Gosu::Color(0xff0000ff) ,Gosu::Color(0xff00ff00) ,Gosu::Color(0xffffff00)};
+//std::vector<std::array<std::array<bool, 4>, 4>> formen;
 //{{false,true,false,false},{true,true,true,false},{false,false,false,false},{false,false,false,false}}
-});
+std::vector<bool[4][4]> formen = {};
 
 
 	unsigned int Spielfeld::hoehe() {
@@ -83,7 +83,7 @@ std::vector<std::array<std::array<bool, 4>, 4>> formen({  {{true,false,false,fal
 		auto kopie = this->form;
 		for (unsigned int i = 0; i < 4;i++) {
 			for (unsigned int j = 0; j < 4;j++) {
-				this->form.at(i).at(j) = kopie.at(3-j).at(i);
+				this->form[i][j] = kopie[3-j][i];
 			}
 		}
 	}
@@ -91,7 +91,7 @@ std::vector<std::array<std::array<bool, 4>, 4>> formen({  {{true,false,false,fal
 		auto kopie = this->form;
 		for (unsigned int i = 0; i < 4; i++) {
 			for (unsigned int j = 0; j < 4; j++) {
-				this->form.at(i).at(j) = kopie.at(j).at(3-i);
+				this->form[i][j] = kopie[j][3-i];
 			}
 		}
 	}
@@ -101,11 +101,11 @@ std::vector<std::array<std::array<bool, 4>, 4>> formen({  {{true,false,false,fal
 		this->farbe = farben.at(rand() % farben.size());
 		this->form = formen.at(rand() % formen.size());
 	}
-	AktiverSpielstein::AktiverSpielstein(AktiverSpielstein const& kopie) {
+	/*AktiverSpielstein::AktiverSpielstein(AktiverSpielstein const& kopie) {
 		*this = kopie;
 		this->positionAufSpielfeld.x = (SPIELFELD_BREITE / 2);
 		this->positionAufSpielfeld.y = (SPIELFELD_BREITE / 2);
-	}
+	}*/
 	void AktiverSpielstein::draw(uint16_t hoehePxl) {
 		for (unsigned int y = 0; y < 4; y++) {
 			for (unsigned int x = 0; x < 4; x++) {
@@ -115,3 +115,4 @@ std::vector<std::array<std::array<bool, 4>, 4>> formen({  {{true,false,false,fal
 			}
 		}
 	}
+	

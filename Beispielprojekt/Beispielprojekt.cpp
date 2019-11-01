@@ -38,7 +38,6 @@ public:
 	{
 		spielfeld.draw(this->hoehePxlAbschnitt);
 		aktiverSpielstein.draw(this->hoehePxlAbschnitt);
-
 	}
 
 	// Wird 60x pro Sekunde aufgerufen
