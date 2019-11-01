@@ -6,7 +6,7 @@ std::vector < Gosu::Color> farben= { Gosu::Color(0xffff0000),Gosu::Color(0xff000
 //{{false,true,false,false},{true,true,true,false},{false,false,false,false},{false,false,false,false}}
 //std::vector<bool[4][4]> formen = {};
 //formen.push_back({false,true,false,false},{true,true,true,false},{false,false,false,false},{false,false,false,false} );
-std::vector<bool> formen = {1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0};
+std::vector<bool> formen = {1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,/**/1,1,0,0,1,1,0,0,0,0,0,0,0,0,0,0,/**/0,1,0,0,1,1,1,0,0,0,0,0,0,0,0,0/**/,1,1,1,0,1,0,0,0,0,0,0,0,0,0,0,0};
 
 	unsigned int Spielfeld::hoehe() {
 		return this->zustand.size();
@@ -76,31 +76,39 @@ std::vector<bool> formen = {1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0};
 					}
 				}
 			}
+			this->farbe=farben.at(rand() % farben.size());
+			unsigned int random = 16 * (rand() % (formen.size() / 16));
+			for (unsigned int i = 0; i < 4; i++) {
+				for (unsigned int j = 0; j < 4; j++) {
+					this->form[i][j] = formen.at(random + j + (i * 4));
+				}
+			}
 		}
 
 		return erfolg;
 	}
 	void AktiverSpielstein::rechtsRotieren() {
-		bool tmp;
+		
 		for (unsigned int i = 0; i < 2; i++) {
 			for (unsigned int j = i; j < (3 - i); j++) {
+				bool tmp;
+				tmp = this->form[i][j];
+				this->form[i][j] = this->form[3-j][i];
+				this->form[3-j][i] = this->form[3 - i][3 - j];
+				this->form[3 - i][3 - j] = this->form[j][3-i];
+				this->form[j][3-i] = tmp;
+			}
+		}
+	}
+	void AktiverSpielstein::linksRotieren() {
+		for (unsigned int i = 0; i < 2; i++) {
+			for (unsigned int j = i; j < (3 - i); j++) {
+				bool tmp;
 				tmp = this->form[i][j];
 				this->form[i][j] = this->form[j][3 - i];
 				this->form[j][3 - i] = this->form[3 - i][3 - j];
 				this->form[3 - i][3 - j] = this->form[3 - j][i];
 				this->form[3 - j][i] = tmp;
-			}
-		}
-	}
-	void AktiverSpielstein::linksRotieren() {
-		bool tmp;
-		for (unsigned int j = 0; j < 2; j++) {
-			for (unsigned int i = j; i < (3-j); i++) {
-				tmp = this->form[j][i];
-				this->form[j][i] = this->form[3-i][j];
-				this->form[i][3 - j] = this->form[3 - j][3 - i];
-				this->form[3 - j][3 - i] = this->form[i][3-j];
-				this->form[i][3-j] = tmp;
 			}
 		}
 	}
