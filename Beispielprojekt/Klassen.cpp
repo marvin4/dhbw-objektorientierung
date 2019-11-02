@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "Klassen.h"
 
-std::vector < Gosu::Color> farben= { Gosu::Color(0xffff0000),Gosu::Color(0xff0000ff) ,Gosu::Color(0xff00ff00) ,Gosu::Color(0xffffff00),Gosu::Color(0xff700000),
+std::vector < Gosu::Color> farben= { Gosu::Color(0xffdf0000),Gosu::Color(0xff0000df) ,Gosu::Color(0xff00df00) ,Gosu::Color(0xffdfdf00),Gosu::Color(0xff700000),
 Gosu::Color(0xff007000),Gosu::Color(0xff000070),Gosu::Color(0xffff7000),Gosu::Color(0xff007070)
 };
 std::vector<bool> formen = {1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,/**/1,1,0,0,1,1,0,0,0,0,0,0,0,0,0,0,/**/0,1,0,0,1,1,1,0,0,0,0,0,0,0,0,0/*
@@ -122,12 +122,14 @@ std::vector<bool> formen = {1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,/**/1,1,0,0,1,1,0,0,
 	}
 	void AktiverSpielstein::neu() {
 		this->farbe=farben.at(rand() % farben.size());//eventuell unterschiedlich Farbe und Form von vorheriger auswaehlen
-			 int random = 16 * (rand() % (formen.size() / 16));
+			int random = 16 * (rand() % (formen.size() / 16));
 			for ( int i = 0; i < 4; i++) {
 				for ( int j = 0; j < 4; j++) {
 					this->form[i][j] = formen.at(random + j + (i * 4));
 				}
 			}
+			this->positionAufSpielfeld.x = Gosu::clamp(this->positionAufSpielfeld.x,0,SPIELFELD_BREITE-4);
+			this->positionAufSpielfeld.y = Gosu::clamp(this->positionAufSpielfeld.y, 0, SPIELFELD_BREITE-4);
 	}
 	void AktiverSpielstein::rechtsRotieren() {//eventuell position um die rotiert wird abhaengig von form machen
 		

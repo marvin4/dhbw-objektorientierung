@@ -6,6 +6,7 @@
 #include <ctime>
 #include <cstdlib>
 #include <array>
+#include <Gosu/Math.hpp>
 
 const int SPIELFELD_BREITE=10;
 
