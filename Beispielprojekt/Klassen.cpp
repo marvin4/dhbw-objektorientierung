@@ -2,7 +2,7 @@
 #include "Klassen.h"
 
 std::vector < Gosu::Color> farben= { Gosu::Color(0xffff0000),Gosu::Color(0xff0000ff) ,Gosu::Color(0xff00ff00) ,Gosu::Color(0xffffff00),Gosu::Color(0xff700000),
-Gosu::Color(0xff007000),Gosu::Color(0xff000070),Gosu::Color(0xffff7000)
+Gosu::Color(0xff007000),Gosu::Color(0xff000070),Gosu::Color(0xffff7000),Gosu::Color(0xff007070)
 };
 std::vector<bool> formen = {1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,/**/1,1,0,0,1,1,0,0,0,0,0,0,0,0,0,0,/**/0,1,0,0,1,1,1,0,0,0,0,0,0,0,0,0/*
 						 */,1,1,1,0,1,0,0,0,0,0,0,0,0,0,0,0/**/,1,0,0,0,1,1,0,0,0,1,0,0,0,0,0,0,/**/0,1,0,0,1,1,0,0,1,0,0,0,0,0,0,0/*
@@ -17,8 +17,9 @@ std::vector<bool> formen = {1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,/**/1,1,0,0,1,1,0,0,
 				elem_ref.status = false;
 			}
 		}
-		this->score = 0;
 		this->startzeit = time(NULL);
+		this->score = 0;
+		this->anzPlatzSpielsteine = 0;
 		srand(time(NULL));
 		
 	}
@@ -43,11 +44,17 @@ std::vector<bool> formen = {1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,/**/1,1,0,0,1,1,0,0,
 	void Spielfeld::addZuScore(int64_t punktzahl) {
 		this->score = this->score + punktzahl;
 	}
+	void Spielfeld::upanzPlatzSpielsteine() {
+		this->anzPlatzSpielsteine = this->anzPlatzSpielsteine + 1;
+	}
 	std::array<std::array<Feld, SPIELFELD_BREITE>, SPIELFELD_BREITE> Spielfeld::get_zustand() {
 		return this->zustand;
 	}
 	int64_t Spielfeld::get_score() {
 		return this->score;
+	}
+	int Spielfeld::get_anzPlatzSpielsteine() {
+		return this->anzPlatzSpielsteine;
 	}
 	void Spielfeld::draw(int hoehePxl) {
 		for ( int y = 0; y < SPIELFELD_BREITE; y++) {

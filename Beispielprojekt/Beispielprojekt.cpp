@@ -41,8 +41,9 @@ public:
 		Gosu::Graphics::draw_rect(0,0,hoehePxlSpielfeld,hoehePxlSpielfeld,Gosu::Color(0x20000000),1, Gosu::AM_INTERPOLATE);
 		spielfeld.draw(this->hoehePxlAbschnitt);
 		aktiverSpielstein.draw(this->hoehePxlAbschnitt);
-		font.draw("Punktestand: " + std::to_string(spielfeld.get_score()),hoehePxlSpielfeld+50,100,5,1,1,Gosu::Color::BLACK);
-		font.draw("Zeit seit Start: " + std::to_string(spielfeld.dauer()), hoehePxlSpielfeld + 30, 50, 5, 1, 1, Gosu::Color::BLACK);
+		font.draw("Spielzeit: " + std::to_string(int(spielfeld.dauer()/60))+"min "+std::to_string(int(spielfeld.dauer())%60)+"s", hoehePxlSpielfeld + 20, 50, 5, 1, 1, Gosu::Color::BLACK);
+		font.draw("Punktestand: " + std::to_string(spielfeld.get_score()),hoehePxlSpielfeld+20,100,5,1,1,Gosu::Color::BLACK);
+		font.draw("Platzierte Formen: " + std::to_string(spielfeld.get_score()), hoehePxlSpielfeld + 20, 150, 5, 1, 1, Gosu::Color::BLACK);
 		hintergrund.draw(0, 0, 0);
 	}
 
@@ -127,6 +128,7 @@ public:
 				if (reihen > 0) {//score berrechnen
 					spielfeld.addZuScore(int(std::pow(2, reihen) * 50));
 				}
+				spielfeld.upanzPlatzSpielsteine();
 				aktiverSpielstein.neu();
 			}
 		}

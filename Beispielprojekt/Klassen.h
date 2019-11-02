@@ -36,6 +36,7 @@ class Spielfeld
 	int64_t score;
 	time_t startzeit;
 	koord refpos = {0,0};//obere linke Ecke
+	int anzPlatzSpielsteine;
 	//int hoehePxlSpielfeld;
 	//int hoehePxlAbschnitt;
 	//Spielstein naechsterSpielstein;
@@ -47,12 +48,14 @@ public:
 	void platziereAbschnitt( int y, int x,Gosu::Color c);
 	void loescheAbschnitt( int y,  int x);
 	void addZuScore(int64_t punktzahl);
+	void upanzPlatzSpielsteine();
 	//bool platzieren(std::array<std::array<bool,4>,4> form,koord pos);
 	//void platzieren(AktiverSpielstein& aktiverSpielstein);
 	void draw(int hoehePxl);
 	//Spielstein nehmeSpielstein();
 	std::array<std::array<Feld, SPIELFELD_BREITE>, SPIELFELD_BREITE> get_zustand();
 	int64_t get_score();
+	int get_anzPlatzSpielsteine();
 };
 
 
