@@ -4,11 +4,12 @@
 std::vector < Gosu::Color> farben= { Gosu::Color(0xffdf0000),Gosu::Color(0xff0000df) ,Gosu::Color(0xff00df00) ,Gosu::Color(0xffdfdf00),Gosu::Color(0xff700000),
 Gosu::Color(0xff007000),Gosu::Color(0xff000070),Gosu::Color(0xffff7000),Gosu::Color(0xff007070)
 };
-std::vector<bool> formen = {1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,/**/0,0,0,0,0,1,1,0,0,1,1,0,0,0,0,0,/**/0,1,0,0,1,1,1,0,0,0,0,0,0,0,0,0/*
-						 */,1,1,1,0,1,0,0,0,0,0,0,0,0,0,0,0/**/,1,0,0,0,1,1,0,0,0,1,0,0,0,0,0,0,/**/0,1,0,0,1,1,0,0,1,0,0,0,0,0,0,0/*
-						 */,1,1,1,0,0,0,1,0,0,0,0,0,0,0,0,0};//4-teilige Figuren
+//const std::vector<bool> formen4 = {1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,/**/0,0,0,0,0,1,1,0,0,1,1,0,0,0,0,0,/**/0,1,0,0,1,1,1,0,0,0,0,0,0,0,0,0/*
+//							    */,1,1,1,0,1,0,0,0,0,0,0,0,0,0,0,0/**/,1,0,0,0,1,1,0,0,0,1,0,0,0,0,0,0,/**/0,1,0,0,1,1,0,0,1,0,0,0,0,0,0,0/*
+//							    */,1,1,1,0,0,0,1,0,0,0,0,0,0,0,0,0};//4-teilige Figuren
 
-	 int Spielfeld::hoehe() {
+
+	int Spielfeld::hoehe() {
 		return this->zustand.size();
 	}
 	void Spielfeld::reset() {
@@ -46,6 +47,11 @@ std::vector<bool> formen = {1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,/**/0,0,0,0,0,1,1,0,
 	}
 	void Spielfeld::upanzPlatzSpielsteine() {
 		this->anzPlatzSpielsteine = this->anzPlatzSpielsteine + 1;
+		if(this->anzPlatzSpielsteine==25){
+			for (bool elem : formen5) {
+				this->formen.push_back(elem);
+			}
+		}
 	}
 	std::array<std::array<Feld, SPIELFELD_BREITE>, SPIELFELD_BREITE> Spielfeld::get_zustand() {
 		return this->zustand;
@@ -120,7 +126,7 @@ std::vector<bool> formen = {1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,/**/0,0,0,0,0,1,1,0,
 
 		return erfolg;
 	}
-	void AktiverSpielstein::neu() {
+	void AktiverSpielstein::neu(std::vector<bool>& formen) {
 		this->farbe=farben.at(rand() % farben.size());//eventuell unterschiedlich Farbe und Form von vorheriger auswaehlen
 			int random = 16 * (rand() % (formen.size() / 16));
 			for ( int i = 0; i < 4; i++) {
@@ -177,13 +183,13 @@ std::vector<bool> formen = {1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,/**/0,0,0,0,0,1,1,0,
 		this->positionAufSpielfeld.x = (SPIELFELD_BREITE / 2);
 		this->positionAufSpielfeld.y = (SPIELFELD_BREITE / 2);
 		this->farbe = farben.at(rand() % farben.size());
-		 int random = 16*(rand() % (formen.size()/16));
+		//int random = 16 * (rand() % (formen.size() / 16));
+		bool startform[4][4] = { {0,0,0,0},{0,1,1,0},{0,1,1,0},{0,0,0,0} };
 		for ( int i = 0; i < 4; i++) {
 			for ( int j = 0; j < 4; j++) {
-				this->form[i][j] = formen.at(random+j+(i*4));
+				this->form[i][j] = startform[i][j];
 			}
 		}
-		//this->form = formen.at(rand() % formen.size());
 	}
 	/*AktiverSpielstein::AktiverSpielstein(AktiverSpielstein const& kopie) {
 		*this = kopie;

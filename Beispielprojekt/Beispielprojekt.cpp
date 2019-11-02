@@ -31,6 +31,7 @@ public:
 		hoehePxlSpielfeld = (std::min(width(), height())- (std::min(width(), height())%SPIELFELD_BREITE));
 		hoehePxlAbschnitt = (hoehePxlSpielfeld / SPIELFELD_BREITE);
 		spielfeld.reset();
+		spielfeld.formen = formen4;
 	}
 	
 	// wird bis zu 60x pro Sekunde aufgerufen.
@@ -50,7 +51,7 @@ public:
 	// Wird 60x pro Sekunde aufgerufen
 	void update() override
 	{
-		//std::cout << Gosu::fps() << std::endl;
+		 //std::cout << Gosu::fps() << std::endl;
 	}
 
 	void button_down(Gosu::Button button) override
@@ -129,7 +130,7 @@ public:
 					spielfeld.addZuScore(int(std::pow(2, reihen) * 50));
 				}
 				spielfeld.upanzPlatzSpielsteine();
-				aktiverSpielstein.neu();
+				aktiverSpielstein.neu(spielfeld.formen);
 			}
 		}
 		

@@ -6,10 +6,17 @@
 #include <ctime>
 #include <cstdlib>
 #include <array>
+#include <vector>
 #include <Gosu/Math.hpp>
 
 const int SPIELFELD_BREITE=10;
-
+const std::vector<bool> formen4 = { 0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,/**/0,0,0,0,0,1,1,0,0,1,1,0,0,0,0,0,/**/0,1,0,0,1,1,1,0,0,0,0,0,0,0,0,0/*
+							    */,1,1,1,0,1,0,0,0,0,0,0,0,0,0,0,0/**/,1,0,0,0,1,1,0,0,0,1,0,0,0,0,0,0,/**/0,1,0,0,1,1,0,0,1,0,0,0,0,0,0,0/*
+							    */,1,1,1,0,0,0,1,0,0,0,0,0,0,0,0,0 };//4-teilige Figuren
+const std::vector<bool> formen5= { 0,1,0,0,0,1,1,0,0,1,0,0,0,1,0,0,/**/0,1,0,0,0,1,1,0,0,1,1,0,0,0,0,0,/**/0,1,0,0,1,1,1,0,0,1,0,0,0,0,0,0/**/
+							     // ,1,1,1,0,1,0,0,0,0,0,0,0,0,0,0,0/**/,1,0,0,0,1,1,0,0,0,1,0,0,0,0,0,0,/**/0,1,0,0,1,1,0,0,1,0,0,0,0,0,0,0/**/
+								 // ,1,1,1,0,0,0,1,0,0,0,0,0,0,0,0,0 
+};
 struct Feld {
 	bool status;
 	Gosu::Color farbe;
@@ -38,11 +45,13 @@ class Spielfeld
 	time_t startzeit;
 	koord refpos = {0,0};//obere linke Ecke
 	int anzPlatzSpielsteine;
+	
 	//int hoehePxlSpielfeld;
 	//int hoehePxlAbschnitt;
 	//Spielstein naechsterSpielstein;
 public:
-	 int hoehe();
+	std::vector<bool> formen;
+	int hoehe();
 	void reset();
 	double dauer();//Zeit seit start in s
 	bool platzbelegt( int y,  int x);
@@ -57,6 +66,7 @@ public:
 	std::array<std::array<Feld, SPIELFELD_BREITE>, SPIELFELD_BREITE> get_zustand();
 	int64_t get_score();
 	int get_anzPlatzSpielsteine();
+	
 };
 
 
@@ -75,6 +85,6 @@ public:
 	void draw(int hoehePxl);
 	 int get_x();
 	 int get_y();
-	void neu();
+	void neu(std::vector<bool>& formen);
 	
 };
