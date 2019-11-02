@@ -175,13 +175,13 @@ std::vector<bool> formen = {1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,/**/1,1,0,0,1,1,0,0,
 	}
 	void AktiverSpielstein::linksBewegen() {
 		int offset = 0;
-		for (int i = 0; i < 3; i++) {
+		for (int i = 0; i < 4; i++) {
 			if (this->spalteBelegt(i)) {
 				offset = i;
 				break;
 			}
 		}
-		if (offset+this->positionAufSpielfeld.x>=0) {
+		if (offset+this->positionAufSpielfeld.x>0) {
 			this->positionAufSpielfeld.x = this->positionAufSpielfeld.x - 1;
 		}
 		else {
@@ -192,11 +192,11 @@ std::vector<bool> formen = {1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,/**/1,1,0,0,1,1,0,0,
 		int offset = 0;
 		for (int i = 3; i>0;i--) {
 			if (this->spalteBelegt(i)) {
-				offset = i+1;
+				offset = i;
 				break;
 			}
 		}
-		if (offset+this->positionAufSpielfeld.x<SPIELFELD_BREITE) {
+		if (offset+1+this->positionAufSpielfeld.x<SPIELFELD_BREITE) {
 			this->positionAufSpielfeld.x = this->positionAufSpielfeld.x + 1;
 		}
 		else {
@@ -205,13 +205,13 @@ std::vector<bool> formen = {1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,/**/1,1,0,0,1,1,0,0,
 	}
 	void AktiverSpielstein::obenBewegen() {
 		int offset = 0;
-		for (int i = 3; i > 0; i--) {
-			if (this->spalteBelegt(i)) {
+		for (int i = 0; i < 4; i++) {
+			if (this->zeileBelegt(i)) {
 				offset = i;
 				break;
 			}
 		}
-		if (true) {
+		if (offset + this->positionAufSpielfeld.y > 0) {
 			this->positionAufSpielfeld.y = this->positionAufSpielfeld.y - 1;
 		}
 		else {
@@ -221,12 +221,12 @@ std::vector<bool> formen = {1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,/**/1,1,0,0,1,1,0,0,
 	void AktiverSpielstein::untenBewegen() {
 		int offset = 0;
 		for (int i = 3; i > 0; i--) {
-			if (this->spalteBelegt(i)) {
+			if (this->zeileBelegt(i)) {
 				offset = i;
 				break;
 			}
 		}
-		if (true) {
+		if (offset + 1 + this->positionAufSpielfeld.y < SPIELFELD_BREITE) {
 			this->positionAufSpielfeld.y = this->positionAufSpielfeld.y + 1;
 		}
 		else {
