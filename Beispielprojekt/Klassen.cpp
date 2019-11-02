@@ -37,6 +37,9 @@ std::vector<bool> formen = {1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,/**/1,1,0,0,1,1,0,0,
 
 		}
 	}*/
+	void Spielfeld::addZuScore(int64_t punktzahl) {
+		this->score = this->score + punktzahl;
+	}
 	std::array<std::array<Feld, SPIELFELD_BREITE>, SPIELFELD_BREITE> Spielfeld::get_zustand() {
 		return this->zustand;
 	}
@@ -58,6 +61,20 @@ std::vector<bool> formen = {1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,/**/1,1,0,0,1,1,0,0,
 		this->farbe = farben.at(rand()%farben.size());
 		this->form = formen.at(rand() % formen.size());
 	}*/
+	bool Spielstein::spalteBelegt(int spalte) {
+		bool r=false;
+		if (this->form[0][spalte]|| this->form[1][spalte] ||this->form[2][spalte] || this->form[3][spalte] ) {
+			r = true;
+		}
+		return r;
+	}
+	bool Spielstein::zeileBelegt(int zeile) {
+		bool r = false;
+		if (this->form[zeile][0] || this->form[zeile][1] || this->form[zeile][2] || this->form[zeile][3]) {
+			r = true;
+		}
+		return r;
+	}
 
 	bool AktiverSpielstein::platzieren(Spielfeld& spielbrett) {
 		//bool erfolg=spielbrett.platzieren(this->form, this->positionAufSpielfeld);
@@ -79,18 +96,27 @@ std::vector<bool> formen = {1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,/**/1,1,0,0,1,1,0,0,
 					}
 				}
 			}
-			this->farbe=farben.at(rand() % farben.size());
+			/*this->farbe=farben.at(rand() % farben.size());//eventuell unterschiedlich Farbe und Form von vorheriger auswaehlen
+			unsigned int random = 16 * (rand() % (formen.size() / 16));//verlegt in Methode neu
+			for (unsigned int i = 0; i < 4; i++) {
+				for (unsigned int j = 0; j < 4; j++) {
+					this->form[i][j] = formen.at(random + j + (i * 4));
+				}
+			}*/
+		}
+
+		return erfolg;
+	}
+	void AktiverSpielstein::neu() {
+		this->farbe=farben.at(rand() % farben.size());//eventuell unterschiedlich Farbe und Form von vorheriger auswaehlen
 			unsigned int random = 16 * (rand() % (formen.size() / 16));
 			for (unsigned int i = 0; i < 4; i++) {
 				for (unsigned int j = 0; j < 4; j++) {
 					this->form[i][j] = formen.at(random + j + (i * 4));
 				}
 			}
-		}
-
-		return erfolg;
 	}
-	void AktiverSpielstein::rechtsRotieren() {
+	void AktiverSpielstein::rechtsRotieren() {//eventuell position um die rotiert wird abhaengig von form machen
 		
 		for (unsigned int i = 0; i < 2; i++) {
 			for (unsigned int j = i; j < (3 - i); j++) {
@@ -103,7 +129,7 @@ std::vector<bool> formen = {1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,/**/1,1,0,0,1,1,0,0,
 			}
 		}
 	}
-	void AktiverSpielstein::linksRotieren() {
+	void AktiverSpielstein::linksRotieren() {//eventuell position um die rotiert wird abhaengig von form machen
 		for (unsigned int i = 0; i < 2; i++) {
 			for (unsigned int j = i; j < (3 - i); j++) {
 				bool tmp;

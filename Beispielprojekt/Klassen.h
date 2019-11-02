@@ -28,6 +28,8 @@ protected:
 public:
 	//Spielstein();
 	//void draw();
+	bool spalteBelegt(int spalte);
+	bool zeileBelegt(int zeile);
 };
 class Spielfeld
 {
@@ -47,6 +49,7 @@ public:
 	bool platzbelegt(unsigned int y, unsigned int x);
 	void platziereAbschnitt(unsigned int y,unsigned int x,Gosu::Color c);
 	void loescheAbschnitt(unsigned int y, unsigned int x);
+	void addZuScore(int64_t punktzahl);
 	//bool platzieren(std::array<std::array<bool,4>,4> form,koord pos);
 	//void platzieren(AktiverSpielstein& aktiverSpielstein);
 	void draw(uint16_t hoehePxl);
@@ -70,4 +73,6 @@ public:
 	void draw(uint16_t hoehePxl);
 	unsigned int get_x();
 	unsigned int get_y();
+	void neu();
+	
 };
