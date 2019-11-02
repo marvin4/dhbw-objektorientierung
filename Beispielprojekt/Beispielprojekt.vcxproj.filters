@@ -24,14 +24,8 @@
     <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Planet.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Vektor2d.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Klassen.h">
-      <Filter>Source Files</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -46,16 +40,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="planet1.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="planet2.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="planet3.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="rakete.png">
+    <Image Include="media\HintergrundHolz800x600.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

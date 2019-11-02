@@ -1,11 +1,14 @@
 #include "stdafx.h"
 #include "Klassen.h"
 
-std::vector < Gosu::Color> farben= { Gosu::Color(0xffff0000),Gosu::Color(0xff0000ff) ,Gosu::Color(0xff00ff00) ,Gosu::Color(0xffffff00)};
+std::vector < Gosu::Color> farben= { Gosu::Color(0xffff0000),Gosu::Color(0xff0000ff) ,Gosu::Color(0xff00ff00) ,Gosu::Color(0xffffff00),Gosu::Color(0xff700000),
+Gosu::Color(0xff007000),Gosu::Color(0xff000070),Gosu::Color(0xffff7000)
+};
 std::vector<bool> formen = {1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,/**/1,1,0,0,1,1,0,0,0,0,0,0,0,0,0,0,/**/0,1,0,0,1,1,1,0,0,0,0,0,0,0,0,0/*
-						 */,1,1,1,0,1,0,0,0,0,0,0,0,0,0,0,0};
+						 */,1,1,1,0,1,0,0,0,0,0,0,0,0,0,0,0/**/,1,0,0,0,1,1,0,0,0,1,0,0,0,0,0,0,/**/0,1,0,0,1,1,0,0,1,0,0,0,0,0,0,0/*
+						 */,1,1,1,0,0,0,1,0,0,0,0,0,0,0,0,0};//4-teilige Figuren
 
-	unsigned int Spielfeld::hoehe() {
+	 int Spielfeld::hoehe() {
 		return this->zustand.size();
 	}
 	void Spielfeld::reset() {
@@ -22,14 +25,14 @@ std::vector<bool> formen = {1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,/**/1,1,0,0,1,1,0,0,
 	double Spielfeld::dauer() {
 		return difftime(time(NULL), this->startzeit);
 	}
-	bool Spielfeld::platzbelegt(unsigned int y, unsigned int x) {
+	bool Spielfeld::platzbelegt( int y,  int x) {
 		return this->zustand.at(y).at(x).status;
 	}
-	void Spielfeld::platziereAbschnitt(unsigned int y, unsigned int x, Gosu::Color c) {
+	void Spielfeld::platziereAbschnitt( int y,  int x, Gosu::Color c) {
 		this->zustand.at(y).at(x).farbe = c;
 		this->zustand.at(y).at(x).status = true;
 	}
-	void Spielfeld::loescheAbschnitt(unsigned int y, unsigned int x) {
+	void Spielfeld::loescheAbschnitt( int y,  int x) {
 		this->zustand.at(y).at(x).status = false;
 	}
 	/*void Spielfeld::platzieren(AktiverSpielstein& aktiverSpielstein) {
@@ -43,9 +46,12 @@ std::vector<bool> formen = {1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,/**/1,1,0,0,1,1,0,0,
 	std::array<std::array<Feld, SPIELFELD_BREITE>, SPIELFELD_BREITE> Spielfeld::get_zustand() {
 		return this->zustand;
 	}
-	void Spielfeld::draw(uint16_t hoehePxl) {
-		for (unsigned int y = 0; y < SPIELFELD_BREITE; y++) {
-			for (unsigned int x = 0; x < SPIELFELD_BREITE; x++) {
+	int64_t Spielfeld::get_score() {
+		return this->score;
+	}
+	void Spielfeld::draw(int hoehePxl) {
+		for ( int y = 0; y < SPIELFELD_BREITE; y++) {
+			for ( int x = 0; x < SPIELFELD_BREITE; x++) {
 				if (this->zustand.at(y).at(x).status) {
 					Gosu::Graphics::draw_rect(x*hoehePxl, y*hoehePxl, hoehePxl, hoehePxl, this->zustand.at(y).at(x).farbe, 3);
 				}
@@ -80,8 +86,8 @@ std::vector<bool> formen = {1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,/**/1,1,0,0,1,1,0,0,
 		//bool erfolg=spielbrett.platzieren(this->form, this->positionAufSpielfeld);
 
 		bool erfolg = true;
-		for (unsigned int i = 0; i < 4; i++) {
-			for (unsigned int j = 0; j < 4; j++) {
+		for ( int i = 0; i < 4; i++) {
+			for ( int j = 0; j < 4; j++) {
 				if (this->form[i][j] && spielbrett.platzbelegt(this->positionAufSpielfeld.y+i,this->positionAufSpielfeld.x+j)) {
 					erfolg = false;
 					break;
@@ -89,17 +95,17 @@ std::vector<bool> formen = {1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,/**/1,1,0,0,1,1,0,0,
 			}
 		}
 		if (erfolg) {
-			for (unsigned int i = 0; i < 4; i++) {
-				for (unsigned int j = 0; j < 4; j++) {
+			for ( int i = 0; i < 4; i++) {
+				for ( int j = 0; j < 4; j++) {
 					if (this->form[i][j]) {
 						spielbrett.platziereAbschnitt(this->positionAufSpielfeld.y + i, this->positionAufSpielfeld.x + j, this->farbe);
 					}
 				}
 			}
 			/*this->farbe=farben.at(rand() % farben.size());//eventuell unterschiedlich Farbe und Form von vorheriger auswaehlen
-			unsigned int random = 16 * (rand() % (formen.size() / 16));//verlegt in Methode neu
-			for (unsigned int i = 0; i < 4; i++) {
-				for (unsigned int j = 0; j < 4; j++) {
+			 int random = 16 * (rand() % (formen.size() / 16));//verlegt in Methode neu
+			for ( int i = 0; i < 4; i++) {
+				for ( int j = 0; j < 4; j++) {
 					this->form[i][j] = formen.at(random + j + (i * 4));
 				}
 			}*/
@@ -109,17 +115,17 @@ std::vector<bool> formen = {1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,/**/1,1,0,0,1,1,0,0,
 	}
 	void AktiverSpielstein::neu() {
 		this->farbe=farben.at(rand() % farben.size());//eventuell unterschiedlich Farbe und Form von vorheriger auswaehlen
-			unsigned int random = 16 * (rand() % (formen.size() / 16));
-			for (unsigned int i = 0; i < 4; i++) {
-				for (unsigned int j = 0; j < 4; j++) {
+			 int random = 16 * (rand() % (formen.size() / 16));
+			for ( int i = 0; i < 4; i++) {
+				for ( int j = 0; j < 4; j++) {
 					this->form[i][j] = formen.at(random + j + (i * 4));
 				}
 			}
 	}
 	void AktiverSpielstein::rechtsRotieren() {//eventuell position um die rotiert wird abhaengig von form machen
 		
-		for (unsigned int i = 0; i < 2; i++) {
-			for (unsigned int j = i; j < (3 - i); j++) {
+		for ( int i = 0; i < 2; i++) {
+			for ( int j = i; j < (3 - i); j++) {
 				bool tmp;
 				tmp = this->form[i][j];
 				this->form[i][j] = this->form[3-j][i];
@@ -130,8 +136,8 @@ std::vector<bool> formen = {1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,/**/1,1,0,0,1,1,0,0,
 		}
 	}
 	void AktiverSpielstein::linksRotieren() {//eventuell position um die rotiert wird abhaengig von form machen
-		for (unsigned int i = 0; i < 2; i++) {
-			for (unsigned int j = i; j < (3 - i); j++) {
+		for ( int i = 0; i < 2; i++) {
+			for ( int j = i; j < (3 - i); j++) {
 				bool tmp;
 				tmp = this->form[i][j];
 				this->form[i][j] = this->form[j][3 - i];
@@ -145,9 +151,9 @@ std::vector<bool> formen = {1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,/**/1,1,0,0,1,1,0,0,
 		this->positionAufSpielfeld.x = (SPIELFELD_BREITE / 2);
 		this->positionAufSpielfeld.y = (SPIELFELD_BREITE / 2);
 		this->farbe = farben.at(rand() % farben.size());
-		unsigned int random = 16*(rand() % (formen.size()/16));
-		for (unsigned int i = 0; i < 4; i++) {
-			for (unsigned int j = 0; j < 4; j++) {
+		 int random = 16*(rand() % (formen.size()/16));
+		for ( int i = 0; i < 4; i++) {
+			for ( int j = 0; j < 4; j++) {
 				this->form[i][j] = formen.at(random+j+(i*4));
 			}
 		}
@@ -158,9 +164,9 @@ std::vector<bool> formen = {1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,/**/1,1,0,0,1,1,0,0,
 		this->positionAufSpielfeld.x = (SPIELFELD_BREITE / 2);
 		this->positionAufSpielfeld.y = (SPIELFELD_BREITE / 2);
 	}*/
-	void AktiverSpielstein::draw(uint16_t hoehePxl) {
-		for (unsigned int y = 0; y < 4; y++) {
-			for (unsigned int x = 0; x < 4; x++) {
+	void AktiverSpielstein::draw(int hoehePxl) {
+		for ( int y = 0; y < 4; y++) {
+			for ( int x = 0; x < 4; x++) {
 				if (this->form[y][x]) {
 					Gosu::Graphics::draw_rect(hoehePxl*(x+this->positionAufSpielfeld.x), hoehePxl*(y+this->positionAufSpielfeld.y), hoehePxl, hoehePxl, this->farbe, 4);
 				}
@@ -168,7 +174,14 @@ std::vector<bool> formen = {1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,/**/1,1,0,0,1,1,0,0,
 		}
 	}
 	void AktiverSpielstein::linksBewegen() {
-		if (true) {
+		int offset = 0;
+		for (int i = 0; i < 3; i++) {
+			if (this->spalteBelegt(i)) {
+				offset = i;
+				break;
+			}
+		}
+		if (offset+this->positionAufSpielfeld.x>=0) {
 			this->positionAufSpielfeld.x = this->positionAufSpielfeld.x - 1;
 		}
 		else {
@@ -176,7 +189,14 @@ std::vector<bool> formen = {1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,/**/1,1,0,0,1,1,0,0,
 		}
 	}
 	void AktiverSpielstein::rechtsBewegen() {
-		if (true) {
+		int offset = 0;
+		for (int i = 3; i>0;i--) {
+			if (this->spalteBelegt(i)) {
+				offset = i+1;
+				break;
+			}
+		}
+		if (offset+this->positionAufSpielfeld.x<SPIELFELD_BREITE) {
 			this->positionAufSpielfeld.x = this->positionAufSpielfeld.x + 1;
 		}
 		else {
@@ -184,6 +204,13 @@ std::vector<bool> formen = {1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,/**/1,1,0,0,1,1,0,0,
 		}
 	}
 	void AktiverSpielstein::obenBewegen() {
+		int offset = 0;
+		for (int i = 3; i > 0; i--) {
+			if (this->spalteBelegt(i)) {
+				offset = i;
+				break;
+			}
+		}
 		if (true) {
 			this->positionAufSpielfeld.y = this->positionAufSpielfeld.y - 1;
 		}
@@ -192,6 +219,13 @@ std::vector<bool> formen = {1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,/**/1,1,0,0,1,1,0,0,
 		}
 	}
 	void AktiverSpielstein::untenBewegen() {
+		int offset = 0;
+		for (int i = 3; i > 0; i--) {
+			if (this->spalteBelegt(i)) {
+				offset = i;
+				break;
+			}
+		}
 		if (true) {
 			this->positionAufSpielfeld.y = this->positionAufSpielfeld.y + 1;
 		}
@@ -199,9 +233,9 @@ std::vector<bool> formen = {1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,/**/1,1,0,0,1,1,0,0,
 
 		}
 	}
-	unsigned int AktiverSpielstein::get_x() {
+	 int AktiverSpielstein::get_x() {
 		return this->positionAufSpielfeld.x;
 	}
-	unsigned int AktiverSpielstein::get_y() {
+	 int AktiverSpielstein::get_y() {
 		return this->positionAufSpielfeld.y;
 	}

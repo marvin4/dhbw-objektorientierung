@@ -15,18 +15,19 @@ const double DT = 100.0;
 
 class GameWindow : public Gosu::Window
 {
-	uint16_t hoehePxlSpielfeld;
-	uint16_t hoehePxlAbschnitt;
+	int hoehePxlSpielfeld;
+	int hoehePxlAbschnitt;
 	Spielfeld spielfeld;
 	AktiverSpielstein aktiverSpielstein;
+	Gosu::Font font;
+	Gosu::Image hintergrund;
 public:
-	Gosu::Image bild;
 	
-
+	
 	GameWindow()
-		: Window(800, 600)
+		: Window(800, 600),font(20),hintergrund("media/HintergrundHolz800x600.png")
 	{
-		set_caption("Gosu Tutorial Game mit Git");
+		set_caption("Testspiel");
 		hoehePxlSpielfeld = (std::min(width(), height())- (std::min(width(), height())%SPIELFELD_BREITE));
 		hoehePxlAbschnitt = (hoehePxlSpielfeld / SPIELFELD_BREITE);
 		spielfeld.reset();
@@ -37,9 +38,12 @@ public:
 	// dann werden `draw` Aufrufe ausgelassen und die Framerate sinkt
 	void draw() override
 	{
-		Gosu::Graphics::draw_rect(0,0,hoehePxlSpielfeld,hoehePxlSpielfeld,Gosu::Color::GRAY,1);
+		Gosu::Graphics::draw_rect(0,0,hoehePxlSpielfeld,hoehePxlSpielfeld,Gosu::Color(0x20000000),1, Gosu::AM_INTERPOLATE);
 		spielfeld.draw(this->hoehePxlAbschnitt);
 		aktiverSpielstein.draw(this->hoehePxlAbschnitt);
+		font.draw("Punktestand: " + std::to_string(spielfeld.get_score()),hoehePxlSpielfeld+50,100,5,1,1,Gosu::Color::BLACK);
+		font.draw("Zeit seit Start: " + std::to_string(spielfeld.dauer()), hoehePxlSpielfeld + 30, 50, 5, 1, 1, Gosu::Color::BLACK);
+		hintergrund.draw(0, 0, 0);
 	}
 
 	// Wird 60x pro Sekunde aufgerufen
@@ -80,16 +84,16 @@ public:
 		}
 		if (button == Gosu::KB_SPACE) {
 			if (aktiverSpielstein.platzieren(spielfeld)) {
-				unsigned int y = aktiverSpielstein.get_y();
-				unsigned int x = aktiverSpielstein.get_x();
-				//unsigned int s = 0;
-				//unsigned int z = 0;
-				unsigned int reihen = 0;
+				 int y = aktiverSpielstein.get_y();
+				 int x = aktiverSpielstein.get_x();
+				// int s = 0;
+				// int z = 0;
+				 int reihen = 0;
 				auto zustand = spielfeld.get_zustand();
-				for (int i = y; i < (y + 4); i++) {//Darf nich fuer Bereiche ausserhalb des Spielfelds ausgefuehrt werden
+				for ( int i = y; i < (y + 4); i++) {//Darf nich fuer Bereiche ausserhalb des Spielfelds ausgefuehrt werden
 					if (aktiverSpielstein.zeileBelegt(i-y)) {
 						bool kompletteReihe = true;
-						for (unsigned int j = 0; j < SPIELFELD_BREITE; j++) {
+						for ( int j = 0; j < SPIELFELD_BREITE; j++) {
 							if (!zustand.at(i).at(j).status) {
 								kompletteReihe = false;
 								break;
@@ -97,16 +101,16 @@ public:
 						}
 						if (kompletteReihe) {
 							reihen = reihen + 1;
-							for (unsigned int k = 0; k < SPIELFELD_BREITE; k++) {
+							for ( int k = 0; k < SPIELFELD_BREITE; k++) {
 								spielfeld.loescheAbschnitt(i, k);
 							}
 						}
 					}
 				}
-				for (int i = x; i < (x + 4); i++) {//Darf nich fuer Bereiche ausserhalb des Spielfelds ausgefuehrt werden
+				for ( int i = x; i < (x + 4); i++) {//Darf nich fuer Bereiche ausserhalb des Spielfelds ausgefuehrt werden
 					if (aktiverSpielstein.spalteBelegt(i-x)) {
 						bool kompletteReihe = true;
-						for (unsigned int j = 0; j < SPIELFELD_BREITE; j++) {
+						for ( int j = 0; j < SPIELFELD_BREITE; j++) {
 							if (!zustand.at(j).at(i).status) {
 								kompletteReihe = false;
 								break;
@@ -114,16 +118,14 @@ public:
 						}
 						if (kompletteReihe) {
 							reihen = reihen + 1;
-							for (unsigned int k = 0; k < SPIELFELD_BREITE; k++) {
+							for ( int k = 0; k < SPIELFELD_BREITE; k++) {
 								spielfeld.loescheAbschnitt(k, i);
 							}
 						}
 					}
-					
-
 				}
 				if (reihen > 0) {//score berrechnen
-					spielfeld.addZuScore(std::powl(2, reihen) * 50);
+					spielfeld.addZuScore(int(std::pow(2, reihen) * 50));
 				}
 				aktiverSpielstein.neu();
 			}
