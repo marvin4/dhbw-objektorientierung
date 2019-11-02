@@ -4,7 +4,7 @@
 std::vector < Gosu::Color> farben= { Gosu::Color(0xffdf0000),Gosu::Color(0xff0000df) ,Gosu::Color(0xff00df00) ,Gosu::Color(0xffdfdf00),Gosu::Color(0xff700000),
 Gosu::Color(0xff007000),Gosu::Color(0xff000070),Gosu::Color(0xffff7000),Gosu::Color(0xff007070)
 };
-std::vector<bool> formen = {1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,/**/1,1,0,0,1,1,0,0,0,0,0,0,0,0,0,0,/**/0,1,0,0,1,1,1,0,0,0,0,0,0,0,0,0/*
+std::vector<bool> formen = {1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,/**/0,0,0,0,0,1,1,0,0,1,1,0,0,0,0,0,/**/0,1,0,0,1,1,1,0,0,0,0,0,0,0,0,0/*
 						 */,1,1,1,0,1,0,0,0,0,0,0,0,0,0,0,0/**/,1,0,0,0,1,1,0,0,0,1,0,0,0,0,0,0,/**/0,1,0,0,1,1,0,0,1,0,0,0,0,0,0,0/*
 						 */,1,1,1,0,0,0,1,0,0,0,0,0,0,0,0,0};//4-teilige Figuren
 
@@ -132,19 +132,36 @@ std::vector<bool> formen = {1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,/**/1,1,0,0,1,1,0,0,
 			this->positionAufSpielfeld.y = Gosu::clamp(this->positionAufSpielfeld.y, 0, SPIELFELD_BREITE-4);
 	}
 	void AktiverSpielstein::rechtsRotieren() {//eventuell position um die rotiert wird abhaengig von form machen
-		
-		for ( int i = 0; i < 2; i++) {
-			for ( int j = i; j < (3 - i); j++) {
+		for (int i = 0; i < 2; i++) {
+			for (int j = i; j < (3 - i); j++) {
 				bool tmp;
 				tmp = this->form[i][j];
-				this->form[i][j] = this->form[3-j][i];
-				this->form[3-j][i] = this->form[3 - i][3 - j];
-				this->form[3 - i][3 - j] = this->form[j][3-i];
-				this->form[j][3-i] = tmp;
+				this->form[i][j] = this->form[3 - j][i];
+				this->form[3 - j][i] = this->form[3 - i][3 - j];
+				this->form[3 - i][3 - j] = this->form[j][3 - i];
+				this->form[j][3 - i] = tmp;
 			}
 		}
+		int offset = 0;
+		for (int i = 3; i > 0; i--) {
+			if (this->spalteBelegt(i)) {
+				offset = i;
+				break;
+			}
+		}
+		this->positionAufSpielfeld.x = Gosu::clamp(this->positionAufSpielfeld.x, 0, SPIELFELD_BREITE - offset-1);
+		offset = 0;
+		for (int i = 3; i >0; i--) {
+			if (this->zeileBelegt(i)) {
+				offset = i;
+				break;
+			}
+		}
+		this->positionAufSpielfeld.y = Gosu::clamp(this->positionAufSpielfeld.y, 0, SPIELFELD_BREITE -offset-1);
 	}
 	void AktiverSpielstein::linksRotieren() {//eventuell position um die rotiert wird abhaengig von form machen
+		this->positionAufSpielfeld.x = Gosu::clamp(this->positionAufSpielfeld.x, 0, SPIELFELD_BREITE - 4);
+		this->positionAufSpielfeld.y = Gosu::clamp(this->positionAufSpielfeld.y, 0, SPIELFELD_BREITE - 4);
 		for ( int i = 0; i < 2; i++) {
 			for ( int j = i; j < (3 - i); j++) {
 				bool tmp;
