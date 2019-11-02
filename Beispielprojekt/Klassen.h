@@ -46,10 +46,12 @@ public:
 	double dauer();//Zeit seit start in s
 	bool platzbelegt(unsigned int y, unsigned int x);
 	void platziereAbschnitt(unsigned int y,unsigned int x,Gosu::Color c);
+	void loescheAbschnitt(unsigned int y, unsigned int x);
 	//bool platzieren(std::array<std::array<bool,4>,4> form,koord pos);
 	//void platzieren(AktiverSpielstein& aktiverSpielstein);
 	void draw(uint16_t hoehePxl);
 	//Spielstein nehmeSpielstein();
+	std::array<std::array<Feld, SPIELFELD_BREITE>, SPIELFELD_BREITE> get_zustand();
 };
 
 
@@ -66,5 +68,6 @@ public:
 	void obenBewegen();
 	void untenBewegen();
 	void draw(uint16_t hoehePxl);
-
+	unsigned int get_x();
+	unsigned int get_y();
 };

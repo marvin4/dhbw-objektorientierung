@@ -29,12 +29,17 @@ std::vector<bool> formen = {1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,/**/1,1,0,0,1,1,0,0,
 		this->zustand.at(y).at(x).farbe = c;
 		this->zustand.at(y).at(x).status = true;
 	}
+	void Spielfeld::loescheAbschnitt(unsigned int y, unsigned int x) {
+		this->zustand.at(y).at(x).status = false;
+	}
 	/*void Spielfeld::platzieren(AktiverSpielstein& aktiverSpielstein) {
 		if (aktiverSpielstein.platzieren(*this)) {
 
 		}
 	}*/
-	
+	std::array<std::array<Feld, SPIELFELD_BREITE>, SPIELFELD_BREITE> Spielfeld::get_zustand() {
+		return this->zustand;
+	}
 	void Spielfeld::draw(uint16_t hoehePxl) {
 		for (unsigned int y = 0; y < SPIELFELD_BREITE; y++) {
 			for (unsigned int x = 0; x < SPIELFELD_BREITE; x++) {
@@ -168,4 +173,9 @@ std::vector<bool> formen = {1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,/**/1,1,0,0,1,1,0,0,
 
 		}
 	}
-	
+	unsigned int AktiverSpielstein::get_x() {
+		return this->positionAufSpielfeld.x;
+	}
+	unsigned int AktiverSpielstein::get_y() {
+		return this->positionAufSpielfeld.y;
+	}

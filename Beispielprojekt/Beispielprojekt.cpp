@@ -7,7 +7,7 @@
 #include <string>
 #include <iostream>
 
-#include "Vektor2d.h"
+//#include "Vektor2d.h"
 #include "Klassen.h"
 
 // Simulationsgeschwindigkeit
@@ -78,7 +78,28 @@ public:
 			aktiverSpielstein.rechtsRotieren();
 		}
 		if (button == Gosu::KB_SPACE) {
-			aktiverSpielstein.platzieren(spielfeld);
+			if (aktiverSpielstein.platzieren(spielfeld)) {
+				unsigned int y = aktiverSpielstein.get_y();
+				unsigned int x = aktiverSpielstein.get_x();
+				unsigned int reihen = 0;
+				auto zustand = spielfeld.get_zustand();
+				for (unsigned int i = y; i < (y + 4); i++) {
+					bool kompletteReihe = true;
+					for (unsigned int j = 0; j < SPIELFELD_BREITE;j++) {
+						if (!zustand.at(i).at(j).status) {
+							kompletteReihe = false;
+							break;
+						}
+					}
+					if (kompletteReihe) {
+						reihen = reihen + 1;
+						for (unsigned int k = 0; k < SPIELFELD_BREITE; k++) {
+							spielfeld.loescheAbschnitt(i, k);
+						}
+					}
+
+				}
+			}
 		}
 		
 	}

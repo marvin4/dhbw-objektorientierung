@@ -41,12 +41,6 @@
     <ClCompile Include="Beispielprojekt.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Planet.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Vektor2d.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Klassen.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
