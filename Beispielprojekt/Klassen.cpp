@@ -31,6 +31,7 @@ Gosu::Color(0xff007000),Gosu::Color(0xff000070),Gosu::Color(0xffff7000),Gosu::Co
 		return this->zustand.at(y).at(x).status;
 	}
 	void Spielfeld::platziereAbschnitt( int y,  int x, Gosu::Color c) {
+		c.set_alpha(160);//platzierte Elemente sind etws dunkler
 		this->zustand.at(y).at(x).farbe = c;
 		this->zustand.at(y).at(x).status = true;
 	}
