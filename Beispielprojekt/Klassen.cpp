@@ -72,6 +72,52 @@ Gosu::Color(0xff007000),Gosu::Color(0xff000070),Gosu::Color(0xffff7000),Gosu::Co
 			}
 		}
 	}
+	/*bool Spielfeld::hatPlatzFuerSpielstein(Spielstein& spielstein) {
+		int z = spielstein.zeilen();
+		int s = spielstein.spalten();
+		bool bs = false;
+		for (int i = 0; i < SPIELFELD_BREITE - z;i++) {
+			for (int j = 0; j < SPIELFELD_BREITE - s;s++) {
+				int k = 0;
+				while ((!(this->platzbelegt(i, j+k) && spielstein.form[0][k]))&&(k<s)) {
+					if (k = s - 1) {
+						int l = 0;
+						while ((!(this->platzbelegt(i+l, j+k) && spielstein.form[l][0])) && (l < z)) {
+							if (l = s - 1) {
+								bs = true;
+							}
+							l++;
+						}
+					}
+					k++;
+				}
+			}
+		}
+		return bs;
+	}*/
+	bool Spielfeld::hatPlatzFuerSpielstein(Spielstein& spielstein) {//fuer kleine Spielfelder OK funktioniert nur wenn weder links noch oben keine freie Reihe ist
+		bool r = false;												
+		int z = spielstein.zeilen();
+		int s = spielstein.spalten();
+		int x = 0;
+		int y = 0;
+		while (!r&&y < SPIELFELD_BREITE - z) {
+			while (!r&&x < SPIELFELD_BREITE - s) {
+				r = true;
+				for (int i = 0; i < z;i++) {
+					for (int j = 0; j < s;j++) {
+						if (spielstein.form[i][j]&&this->zustand.at(y+i).at(x+j).status) {
+							r = false;
+						}
+					}
+				}
+				x++;
+			}
+			y++;
+		}
+		return r;
+	}
+
 	/*Spielstein Spielfeld::nehmeSpielstein()
 	{
 		return Spielstein();
@@ -94,6 +140,26 @@ Gosu::Color(0xff007000),Gosu::Color(0xff000070),Gosu::Color(0xffff7000),Gosu::Co
 			r = true;
 		}
 		return r;
+	}
+	int Spielstein::zeilen() {
+		int z = 1;
+		for (int i = 3; i >= 0; i--) {
+			if (this->zeileBelegt(i)) {
+				z = z + i;
+				break;
+			}
+		}
+		return z;
+	}
+	int Spielstein::spalten() {
+		int s = 1;
+		for (int i = 3; i >= 0; i--) {
+			if (this->spalteBelegt(i)) {
+				s = s + i;
+				break;
+			}
+		}
+		return s;
 	}
 
 	bool AktiverSpielstein::platzieren(Spielfeld& spielbrett) {
@@ -138,7 +204,7 @@ Gosu::Color(0xff007000),Gosu::Color(0xff000070),Gosu::Color(0xffff7000),Gosu::Co
 			this->positionAufSpielfeld.x = Gosu::clamp(this->positionAufSpielfeld.x,0,SPIELFELD_BREITE-4);
 			this->positionAufSpielfeld.y = Gosu::clamp(this->positionAufSpielfeld.y, 0, SPIELFELD_BREITE-4);
 	}
-	void AktiverSpielstein::rechtsRotieren() {//eventuell position um die rotiert wird abhaengig von form machen
+	/*void AktiverSpielstein::rechtsRotieren() {//eventuell position um die rotiert wird abhaengig von form machen
 		for (int i = 0; i < 2; i++) {
 			for (int j = i; j < (3 - i); j++) {
 				bool tmp;
@@ -165,6 +231,29 @@ Gosu::Color(0xff007000),Gosu::Color(0xff000070),Gosu::Color(0xffff7000),Gosu::Co
 			}
 		}
 		this->positionAufSpielfeld.y = Gosu::clamp(this->positionAufSpielfeld.y, 0, SPIELFELD_BREITE -offset-1);
+	}*/
+	void AktiverSpielstein::rechtsRotieren() {//nur für Formen aus 4 oder mehr Teilen
+		int s = this->spalten();				  //eventuell noch positiosanpassung vornehmen
+		int z = this->zeilen();
+		if (z==s&&z>2) {
+			for (int i = 0; i < z-2; i++) {
+				for (int j = i; j < (z-1 - i); j++) {
+					bool tmp;
+					tmp = this->form[i][j];
+					this->form[i][j] = this->form[z-1 - j][i];
+					this->form[z-1 - j][i] = this->form[z-1 - i][z-1 - j];
+					this->form[z-1 - i][z-1 - j] = this->form[j][z-1 - i];
+					this->form[j][z-1 - i] = tmp;
+				}
+			}
+		}
+		if (z==1||s==1) {
+			for (int i = 1; i < 4;i++) {
+				bool tmp = this->form[0][i];
+				this->form[0][i] = this->form[i][0];
+				this->form[i][0] = tmp;
+			}
+		}
 	}
 	void AktiverSpielstein::linksRotieren() {//eventuell position um die rotiert wird abhaengig von form machen
 		this->positionAufSpielfeld.x = Gosu::clamp(this->positionAufSpielfeld.x, 0, SPIELFELD_BREITE - 4);

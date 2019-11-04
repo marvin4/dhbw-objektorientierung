@@ -51,7 +51,8 @@ public:
 	// Wird 60x pro Sekunde aufgerufen
 	void update() override
 	{
-		 //std::cout << Gosu::fps() << std::endl;
+		std::cout << Gosu::fps() << std::endl;
+		std::cout << spielfeld.hatPlatzFuerSpielstein(aktiverSpielstein);
 	}
 
 	void button_down(Gosu::Button button) override

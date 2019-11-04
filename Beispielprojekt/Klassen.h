@@ -10,12 +10,12 @@
 #include <Gosu/Math.hpp>
 
 const int SPIELFELD_BREITE=10;
-const std::vector<bool> formen4 = { 0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,/**/0,0,0,0,0,1,1,0,0,1,1,0,0,0,0,0,/**/0,1,0,0,1,1,1,0,0,0,0,0,0,0,0,0/*
-							    */,1,1,1,0,1,0,0,0,0,0,0,0,0,0,0,0/**/,1,0,0,0,1,1,0,0,0,1,0,0,0,0,0,0,/**/0,1,0,0,1,1,0,0,1,0,0,0,0,0,0,0/*
-							    */,1,1,1,0,0,0,1,0,0,0,0,0,0,0,0,0 };//4-teilige Figuren
-const std::vector<bool> formen5= { 0,1,0,0,0,1,1,0,0,1,0,0,0,1,0,0,/**/0,1,0,0,0,1,1,0,0,1,1,0,0,0,0,0,/**/0,1,0,0,1,1,1,0,0,1,0,0,0,0,0,0/**/
-							      ,1,1,1,0,1,0,0,0,1,0,0,0,0,0,0,0/**/,1,0,0,0,1,1,0,0,0,1,0,0,0,1,0,0,/**/0,1,0,0,1,1,0,0,1,0,0,0,1,0,0,0/**/
-								  ,1,1,1,0,0,1,0,0,0,1,0,0,0,0,0,0 
+const std::vector<bool> formen4 = {1,1,0,0,1,1,0,0,0,0,0,0,0,0,0,0,/**/1,1,0,0,1,0,0,0,1,0,0,0,0,0,0,0,/**/1,1,0,0,0,1,0,0,0,1,0,0,0,0,0,0/*
+							    */,1,1,1,0,0,1,0,0,0,0,0,0,0,0,0,0/**/,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,/**/1,1,0,0,0,1,1,0,0,0,0,0,0,0,0,0/*
+							    */,0,1,1,0,1,1,0,0,0,0,0,0,0,0,0,0 };//4-teilige Figuren
+const std::vector<bool> formen5= { 1,1,1,0,0,1,0,0,0,1,0,0,0,0,0,0,/**/1,1,0,0,1,0,0,0,1,1,0,0,0,0,0,0,/**/1,1,0,0,1,1,0,0,0,1,0,0,0,0,0,0/**/
+							      ,1,0,0,0,1,1,0,0,1,0,0,0,1,0,0,0/**/,0,1,0,0,1,1,0,0,1,0,0,0,1,0,0,0,/**/1,1,1,0,1,0,0,0,1,0,0,0,0,0,0,0/**/
+								  ,0,1,0,0,1,1,1,0,0,1,0,0,0,0,0,0 
 };
 struct Feld {
 	bool status;
@@ -25,16 +25,17 @@ struct koord {
 	 int x, y;
 };
 class Spielstein {
-	
 protected:
 	//std::array<std::array<bool, 4>, 4> form;
-	bool form[4][4];
 	Gosu::Color farbe;
 public:
 	//Spielstein();
 	//void draw();
+	bool form[4][4];
 	bool spalteBelegt(int spalte);
 	bool zeileBelegt(int zeile);
+	int zeilen();
+	int spalten();
 };
 class Spielfeld
 {
@@ -66,7 +67,7 @@ public:
 	std::array<std::array<Feld, SPIELFELD_BREITE>, SPIELFELD_BREITE> get_zustand();
 	int64_t get_score();
 	int get_anzPlatzSpielsteine();
-	
+	bool hatPlatzFuerSpielstein(Spielstein& spielstein);
 };
 
 
