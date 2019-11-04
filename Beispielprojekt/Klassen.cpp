@@ -235,7 +235,47 @@ Gosu::Color(0xff007000),Gosu::Color(0xff000070),Gosu::Color(0xffff7000),Gosu::Co
 	void AktiverSpielstein::rechtsRotieren() {//nur für Formen aus 4 oder mehr Teilen
 		int s = this->spalten();				  //eventuell noch positiosanpassung vornehmen
 		int z = this->zeilen();
-		if (z==s&&z>2) {
+		for (int i = 0; i < z;i++) {//Versuch 3
+			
+			}
+		}
+		/*int c = s + z * 10;//Versuch2
+		switch (c) {
+		case 23:
+
+			break;
+		case 24:
+			break;
+		case 32:
+			break;
+		case 34:
+			break;
+		case 14:
+		case 41:
+			for (int i = 1; i < 4; i++) {
+				bool tmp = this->form[0][i];
+				this->form[0][i] = this->form[i][0];
+				this->form[i][0] = tmp;
+			}
+			break;
+
+		default:
+			if (z == s && z > 2) {
+				for (int i = 0; i < z - 2; i++) {
+					for (int j = i; j < (z - 1 - i); j++) {
+						bool tmp;
+						tmp = this->form[i][j];
+						this->form[i][j] = this->form[z - 1 - j][i];
+						this->form[z - 1 - j][i] = this->form[z - 1 - i][z - 1 - j];
+						this->form[z - 1 - i][z - 1 - j] = this->form[j][z - 1 - i];
+						this->form[j][z - 1 - i] = tmp;
+					}
+				}
+			}
+			break;
+		}*/
+
+		/*if (z==s&&z>2) {//switch statdessen verwenden //Versuch 1
 			for (int i = 0; i < z-2; i++) {
 				for (int j = i; j < (z-1 - i); j++) {
 					bool tmp;
@@ -247,13 +287,21 @@ Gosu::Color(0xff007000),Gosu::Color(0xff000070),Gosu::Color(0xffff7000),Gosu::Co
 				}
 			}
 		}
-		if (z==1||s==1) {
-			for (int i = 1; i < 4;i++) {
-				bool tmp = this->form[0][i];
-				this->form[0][i] = this->form[i][0];
-				this->form[i][0] = tmp;
+		else {
+			if (z == 1 || s == 1) {
+				for (int i = 1; i < 4; i++) {
+					bool tmp = this->form[0][i];
+					this->form[0][i] = this->form[i][0];
+					this->form[i][0] = tmp;
+				}
 			}
-		}
+			else {
+				if (z==2) {
+
+				}
+			}
+		}*/
+
 	}
 	void AktiverSpielstein::linksRotieren() {//eventuell position um die rotiert wird abhaengig von form machen
 		this->positionAufSpielfeld.x = Gosu::clamp(this->positionAufSpielfeld.x, 0, SPIELFELD_BREITE - 4);
