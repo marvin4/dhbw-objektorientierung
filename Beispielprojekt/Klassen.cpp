@@ -95,25 +95,33 @@ Gosu::Color(0xff007000),Gosu::Color(0xff000070),Gosu::Color(0xffff7000),Gosu::Co
 		}
 		return bs;
 	}*/
-	bool Spielfeld::hatPlatzFuerSpielstein(Spielstein& spielstein) {//fuer kleine Spielfelder OK funktioniert nur wenn weder links noch oben keine freie Reihe ist
+	bool Spielfeld::hatPlatzFuerSpielstein(Spielstein spielstein) {//fuer kleine Spielfelder OK 
 		bool r = false;												
-		int z = spielstein.zeilen();
-		int s = spielstein.spalten();
-		int x = 0;
-		int y = 0;
-		while (!r&&y < SPIELFELD_BREITE - z) {
-			while (!r&&x < SPIELFELD_BREITE - s) {
-				r = true;
-				for (int i = 0; i < z;i++) {
-					for (int j = 0; j < s;j++) {
-						if (spielstein.form[i][j]&&this->zustand.at(y+i).at(x+j).status) {
-							r = false;
+		
+		int n = 0;
+		while (!r&&n < 4) {
+			int z = spielstein.zeilen();
+			int s = spielstein.spalten();
+			int x = 0;
+			int y = 0;
+			while (!r&&y < SPIELFELD_BREITE - z) {
+				while (!r&&x < SPIELFELD_BREITE - s) {
+					r = true;
+					for (int i = 0; i < z; i++) {
+						for (int j = 0; j < s; j++) {
+							if (spielstein.form[i][j] && this->zustand.at(y + i).at(x + j).status) {
+								r = false;
+							}
 						}
 					}
+					x++;
 				}
-				x++;
+				y++;
 			}
-			y++;
+			if (n<3) {
+				spielstein.rotiere();
+			}
+			n = n + 1;
 		}
 		return r;
 	}
@@ -160,6 +168,22 @@ Gosu::Color(0xff007000),Gosu::Color(0xff000070),Gosu::Color(0xffff7000),Gosu::Co
 			}
 		}
 		return s;
+	}
+	void Spielstein::rotiere() {
+		int s = this->spalten();				  
+		int z = this->zeilen();
+		bool kopie[4][4];
+		for (int i = 0; i < 4; i++) {
+			for (int j = 0; j < 4; j++) {
+				kopie[i][j] = this->form[i][j];
+				this->form[i][j] = false;
+			}
+		}
+		for (int i = 0; i < s; i++) {
+			for (int j = 0; j < z; j++) {
+				this->form[i][j] = kopie[z - 1 - j][i];
+			}
+		}
 	}
 
 	bool AktiverSpielstein::platzieren(Spielfeld& spielbrett) {
@@ -235,10 +259,20 @@ Gosu::Color(0xff007000),Gosu::Color(0xff000070),Gosu::Color(0xffff7000),Gosu::Co
 	void AktiverSpielstein::rechtsRotieren() {//nur für Formen aus 4 oder mehr Teilen
 		int s = this->spalten();				  //eventuell noch positiosanpassung vornehmen
 		int z = this->zeilen();
-		for (int i = 0; i < z;i++) {//Versuch 3
-			
+		bool kopie[4][4];
+		for (int i = 0; i < 4; i++) {
+			for (int j = 0; j < 4; j++) {
+				kopie[i][j] = this->form[i][j];
+				this->form[i][j] = false;
 			}
 		}
+		for (int i = 0; i < s; i++) {
+			for (int j = 0; j < z; j++) {
+				this->form[i][j] = kopie[z-1-j][i];
+			}
+		}
+		this->positionAufSpielfeld.x = Gosu::clamp(this->positionAufSpielfeld.x,0,SPIELFELD_BREITE-z);
+		this->positionAufSpielfeld.y = Gosu::clamp(this->positionAufSpielfeld.y, 0, SPIELFELD_BREITE - s);
 		/*int c = s + z * 10;//Versuch2
 		switch (c) {
 		case 23:
@@ -301,28 +335,45 @@ Gosu::Color(0xff007000),Gosu::Color(0xff000070),Gosu::Color(0xffff7000),Gosu::Co
 				}
 			}
 		}*/
-
 	}
+
+	
 	void AktiverSpielstein::linksRotieren() {//eventuell position um die rotiert wird abhaengig von form machen
-		this->positionAufSpielfeld.x = Gosu::clamp(this->positionAufSpielfeld.x, 0, SPIELFELD_BREITE - 4);
-		this->positionAufSpielfeld.y = Gosu::clamp(this->positionAufSpielfeld.y, 0, SPIELFELD_BREITE - 4);
-		for ( int i = 0; i < 2; i++) {
-			for ( int j = i; j < (3 - i); j++) {
-				bool tmp;
-				tmp = this->form[i][j];
-				this->form[i][j] = this->form[j][3 - i];
-				this->form[j][3 - i] = this->form[3 - i][3 - j];
-				this->form[3 - i][3 - j] = this->form[3 - j][i];
-				this->form[3 - j][i] = tmp;
+	//	this->positionAufSpielfeld.x = Gosu::clamp(this->positionAufSpielfeld.x, 0, SPIELFELD_BREITE - 4);
+	//	this->positionAufSpielfeld.y = Gosu::clamp(this->positionAufSpielfeld.y, 0, SPIELFELD_BREITE - 4);
+	//	for ( int i = 0; i < 2; i++) {
+	//		for ( int j = i; j < (3 - i); j++) {
+	//			bool tmp;
+	//			tmp = this->form[i][j];
+	//			this->form[i][j] = this->form[j][3 - i];
+	//			this->form[j][3 - i] = this->form[3 - i][3 - j];
+	//			this->form[3 - i][3 - j] = this->form[3 - j][i];
+	//			this->form[3 - j][i] = tmp;
+	//		}
+	//	}
+		int s = this->spalten();				  //eventuell noch positiosanpassung vornehmen
+		int z = this->zeilen();
+		bool kopie[4][4];
+		for (int i = 0; i < 4; i++) {
+			for (int j = 0; j < 4; j++) {
+				kopie[i][j] = this->form[i][j];
+				this->form[i][j] = false;
 			}
 		}
+		for (int i = 0; i < s; i++) {
+			for (int j = 0; j < z; j++) {
+				this->form[i][j] = kopie[j][s-i-1];
+			}
+		}
+		this->positionAufSpielfeld.x = Gosu::clamp(this->positionAufSpielfeld.x, 0, SPIELFELD_BREITE - z);
+		this->positionAufSpielfeld.y = Gosu::clamp(this->positionAufSpielfeld.y, 0, SPIELFELD_BREITE - s);
 	}
 	AktiverSpielstein::AktiverSpielstein() {
 		this->positionAufSpielfeld.x = (SPIELFELD_BREITE / 2);
 		this->positionAufSpielfeld.y = (SPIELFELD_BREITE / 2);
 		this->farbe = farben.at(rand() % farben.size());
 		//int random = 16 * (rand() % (formen.size() / 16));
-		bool startform[4][4] = { {0,0,0,0},{0,1,1,0},{0,1,1,0},{0,0,0,0} };
+		bool startform[4][4] = { {1,1,0,0},{1,1,0,0},{0,0,0,0},{0,0,0,0} };
 		for ( int i = 0; i < 4; i++) {
 			for ( int j = 0; j < 4; j++) {
 				this->form[i][j] = startform[i][j];

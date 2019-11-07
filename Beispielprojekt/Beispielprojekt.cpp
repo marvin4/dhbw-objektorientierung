@@ -39,24 +39,26 @@ public:
 	// dann werden `draw` Aufrufe ausgelassen und die Framerate sinkt
 	void draw() override
 	{
+		hintergrund.draw(0, 0, 0);
 		Gosu::Graphics::draw_rect(0,0,hoehePxlSpielfeld,hoehePxlSpielfeld,Gosu::Color(0x20000000),1, Gosu::AM_INTERPOLATE);
 		spielfeld.draw(this->hoehePxlAbschnitt);
 		aktiverSpielstein.draw(this->hoehePxlAbschnitt);
 		font.draw("Spielzeit: " + std::to_string(int(spielfeld.dauer()/60))+"min "+std::to_string(int(spielfeld.dauer())%60)+"s", hoehePxlSpielfeld + 20, 50, 5, 1, 1, Gosu::Color::BLACK);
 		font.draw("Punktestand: " + std::to_string(spielfeld.get_score()),hoehePxlSpielfeld+20,100,5,1,1,Gosu::Color::BLACK);
 		font.draw("Platzierte Teile: " + std::to_string(spielfeld.get_anzPlatzSpielsteine()), hoehePxlSpielfeld + 20, 150, 5, 1, 1, Gosu::Color::BLACK);
-		hintergrund.draw(0, 0, 0);
+		
 	}
 
 	// Wird 60x pro Sekunde aufgerufen
 	void update() override
 	{
-		std::cout << Gosu::fps() << std::endl;
+		//std::cout << Gosu::fps() << std::endl;
 		std::cout << spielfeld.hatPlatzFuerSpielstein(aktiverSpielstein);
 	}
 
 	void button_down(Gosu::Button button) override
 	{
+		
 		if (button == Gosu::KB_ESCAPE) {
 			close();
 		}
@@ -67,7 +69,8 @@ public:
 
 	void button_up(Gosu::Button button) override
 	{
-		if (button == Gosu::KB_LEFT) {
+		
+		if (button == Gosu::KB_LEFT) {//Spiel Steuerung
 			aktiverSpielstein.linksBewegen();
 		}
 		if (button == Gosu::KB_RIGHT) {

@@ -30,6 +30,9 @@
     <ClInclude Include="resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Menue.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -41,12 +44,15 @@
     <ClCompile Include="Klassen.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Menue.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="media\HintergrundHolz800x600.png">
+    <Image Include="Icon.ico">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Icon.ico">
+    <Image Include="media\HintergrundHolz800x600.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

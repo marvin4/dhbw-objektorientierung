@@ -8,8 +8,10 @@
 #include <array>
 #include <vector>
 #include <Gosu/Math.hpp>
+#include <iostream>
 
 const int SPIELFELD_BREITE=10;
+
 const std::vector<bool> formen4 = {1,1,0,0,1,1,0,0,0,0,0,0,0,0,0,0,/**/1,1,0,0,1,0,0,0,1,0,0,0,0,0,0,0,/**/1,1,0,0,0,1,0,0,0,1,0,0,0,0,0,0/*
 							    */,1,1,1,0,0,1,0,0,0,0,0,0,0,0,0,0/**/,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,/**/1,1,0,0,0,1,1,0,0,0,0,0,0,0,0,0/*
 							    */,0,1,1,0,1,1,0,0,0,0,0,0,0,0,0,0 };//4-teilige Figuren
@@ -31,11 +33,12 @@ protected:
 public:
 	//Spielstein();
 	//void draw();
-	bool form[4][4];
+	std::array<std::array<bool,4>,4>form;
 	bool spalteBelegt(int spalte);
 	bool zeileBelegt(int zeile);
 	int zeilen();
 	int spalten();
+	void rotiere();
 };
 class Spielfeld
 {
@@ -67,7 +70,7 @@ public:
 	std::array<std::array<Feld, SPIELFELD_BREITE>, SPIELFELD_BREITE> get_zustand();
 	int64_t get_score();
 	int get_anzPlatzSpielsteine();
-	bool hatPlatzFuerSpielstein(Spielstein& spielstein);
+	bool hatPlatzFuerSpielstein(Spielstein spielstein);
 };
 
 
