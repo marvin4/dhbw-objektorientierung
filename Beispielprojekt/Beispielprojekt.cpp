@@ -7,8 +7,9 @@
 #include <string>
 #include <iostream>
 
-//#include "Vektor2d.h"
+//#include Eigene Klassen
 #include "Klassen.h"
+#include "Menue.h"
 
 // Simulationsgeschwindigkeit
 const double DT = 100.0;
@@ -17,6 +18,7 @@ class GameWindow : public Gosu::Window
 {
 	int hoehePxlSpielfeld;
 	int hoehePxlAbschnitt;
+	Menue menue;
 	Spielfeld spielfeld;
 	AktiverSpielstein aktiverSpielstein;
 	Gosu::Font font;
@@ -40,13 +42,14 @@ public:
 	void draw() override
 	{
 		hintergrund.draw(0, 0, 0);
-		Gosu::Graphics::draw_rect(0,0,hoehePxlSpielfeld,hoehePxlSpielfeld,Gosu::Color(0x20000000),1, Gosu::AM_INTERPOLATE);
-		spielfeld.draw(this->hoehePxlAbschnitt);
-		aktiverSpielstein.draw(this->hoehePxlAbschnitt);
-		font.draw("Spielzeit: " + std::to_string(int(spielfeld.dauer()/60))+"min "+std::to_string(int(spielfeld.dauer())%60)+"s", hoehePxlSpielfeld + 20, 50, 5, 1, 1, Gosu::Color::BLACK);
-		font.draw("Punktestand: " + std::to_string(spielfeld.get_score()),hoehePxlSpielfeld+20,100,5,1,1,Gosu::Color::BLACK);
-		font.draw("Platzierte Teile: " + std::to_string(spielfeld.get_anzPlatzSpielsteine()), hoehePxlSpielfeld + 20, 150, 5, 1, 1, Gosu::Color::BLACK);
-		
+		if (true) {
+			Gosu::Graphics::draw_rect(0, 0, hoehePxlSpielfeld, hoehePxlSpielfeld, Gosu::Color(0x20000000), 1, Gosu::AM_INTERPOLATE);
+			spielfeld.draw(this->hoehePxlAbschnitt);
+			aktiverSpielstein.draw(this->hoehePxlAbschnitt);
+			font.draw("Spielzeit: " + std::to_string(int(spielfeld.dauer() / 60)) + "min " + std::to_string(int(spielfeld.dauer()) % 60) + "s", hoehePxlSpielfeld + 20, 50, 5, 1, 1, Gosu::Color::BLACK);
+			font.draw("Punktestand: " + std::to_string(spielfeld.get_score()), hoehePxlSpielfeld + 20, 100, 5, 1, 1, Gosu::Color::BLACK);
+			font.draw("Platzierte Teile: " + std::to_string(spielfeld.get_anzPlatzSpielsteine()), hoehePxlSpielfeld + 20, 150, 5, 1, 1, Gosu::Color::BLACK);
+		}
 	}
 
 	// Wird 60x pro Sekunde aufgerufen
