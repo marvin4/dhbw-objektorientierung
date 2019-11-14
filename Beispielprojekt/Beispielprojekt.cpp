@@ -41,11 +41,9 @@ public:
 	// dann werden `draw` Aufrufe ausgelassen und die Framerate sinkt
 	void draw() override
 	{	
-		int h = height();
-		int w = width();
-		hoehePxlSpielfeld = (std::min(w, h) - (std::min(w, h) % SPIELFELD_BREITE));
+		hoehePxlSpielfeld = (std::min(width(), height()) - (std::min(width(), height()) % SPIELFELD_BREITE));
 		hoehePxlAbschnitt = (hoehePxlSpielfeld / SPIELFELD_BREITE);
-		hintergrund.draw(0, 0, 0,w/800.0,h/600.0);
+		hintergrund.draw(0, 0, 0,width()/800.,height()/600.0);
 		if (true) {
 			Gosu::Graphics::draw_rect(0, 0, hoehePxlSpielfeld, hoehePxlSpielfeld, Gosu::Color(0x20000000), 1, Gosu::AM_INTERPOLATE);
 			spielfeld.draw(this->hoehePxlAbschnitt);
