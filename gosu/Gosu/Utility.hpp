@@ -7,10 +7,7 @@
 
 namespace Gosu
 {
-    //! Converts an UTF-8 to UCS-4 or UTF-16, depending on the platform's interpretation of wstring.
-    std::wstring utf8_to_wstring(const std::string& utf8);
-    //! Converts an UCS-4 or UTF-16 to UTF-8, depending on the platform's interpretation of wstring.
-    std::string wstring_to_utf8(const std::wstring& ws);
+    std::u32string utf8_to_composed_utc4(const std::string& utf8);
     
     //! Returns true if the filename has the given extension.
     //! The comparison is case-insensitive, but you must pass the extension in lower case.

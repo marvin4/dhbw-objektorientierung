@@ -27,7 +27,7 @@ public:
 	
 	
 	GameWindow()
-		: Window(800, 600),font(20),hintergrund("media/HintergrundHolz800x600.png")
+		: Window(800, 600,false,1/60,true),font(20),hintergrund("media/HintergrundHolz800x600.png")
 	{
 		set_caption("Testspiel");
 		hoehePxlSpielfeld = (std::min(width(), height())- (std::min(width(), height())%SPIELFELD_BREITE));
@@ -40,21 +40,26 @@ public:
 	// Wenn die Grafikkarte oder der Prozessor nicht mehr hinterherkommen,
 	// dann werden `draw` Aufrufe ausgelassen und die Framerate sinkt
 	void draw() override
-	{
-		hintergrund.draw(0, 0, 0);
+	{	
+		int h = height();
+		int w = width();
+		hoehePxlSpielfeld = (std::min(w, h) - (std::min(w, h) % SPIELFELD_BREITE));
+		hoehePxlAbschnitt = (hoehePxlSpielfeld / SPIELFELD_BREITE);
+		hintergrund.draw(0, 0, 0,w/800.0,h/600.0);
 		if (true) {
 			Gosu::Graphics::draw_rect(0, 0, hoehePxlSpielfeld, hoehePxlSpielfeld, Gosu::Color(0x20000000), 1, Gosu::AM_INTERPOLATE);
 			spielfeld.draw(this->hoehePxlAbschnitt);
 			aktiverSpielstein.draw(this->hoehePxlAbschnitt);
-			font.draw("Spielzeit: " + std::to_string(int(spielfeld.dauer() / 60)) + "min " + std::to_string(int(spielfeld.dauer()) % 60) + "s", hoehePxlSpielfeld + 20, 50, 5, 1, 1, Gosu::Color::BLACK);
-			font.draw("Punktestand: " + std::to_string(spielfeld.get_score()), hoehePxlSpielfeld + 20, 100, 5, 1, 1, Gosu::Color::BLACK);
-			font.draw("Platzierte Teile: " + std::to_string(spielfeld.get_anzPlatzSpielsteine()), hoehePxlSpielfeld + 20, 150, 5, 1, 1, Gosu::Color::BLACK);
+			font.draw_text("Spielzeit: " + std::to_string(int(spielfeld.dauer() / 60)) + "min " + std::to_string(int(spielfeld.dauer()) % 60) + "s", hoehePxlSpielfeld + 20, 50, 5, 1, 1, Gosu::Color::BLACK);
+			font.draw_text("Punktestand: " + std::to_string(spielfeld.get_score()), hoehePxlSpielfeld + 20, 100, 5, 1, 1, Gosu::Color::BLACK);
+			font.draw_text("Platzierte Teile: " + std::to_string(spielfeld.get_anzPlatzSpielsteine()), hoehePxlSpielfeld + 20, 150, 5, 1, 1, Gosu::Color::BLACK);
 		}
 	}
 
 	// Wird 60x pro Sekunde aufgerufen
 	void update() override
 	{
+		
 		//std::cout << Gosu::fps() << std::endl;
 		std::cout << spielfeld.hatPlatzFuerSpielstein(aktiverSpielstein);
 	}

@@ -18,27 +18,12 @@
 
 namespace Gosu
 {
-    //! Returns the width (in pixels) of the user's primary screen.
-    unsigned screen_width();
-    
-    //! Returns the height (in pixels) of the user's primary screen.
-    unsigned screen_height();
-    
-    //! Returns the maximum width (in 'points') that is available for a non-fullscreen Window.
-    //! All windows larger than this size will automatically be shrunk to fit.
-    unsigned available_width();
-    
-    //! Returns the maximum height (in 'points') that is available for a non-fullscreen Window.
-    //! All windows larger than this size will automatically be shrunk to fit.
-    unsigned available_height();
-    
     //! Convenient all-in-one class that serves as the foundation of a standard Gosu application.
     //! Manages initialization of all of Gosu's core components and provides timing functionality.
     //! Note that you should really only use one instance of this class at the same time.
     class Window
     {
         struct Impl;
-        // Non-movable (const) to avoid dangling internal references.
         const std::unique_ptr<Impl> pimpl;
 
     public:
@@ -49,14 +34,15 @@ namespace Gosu
         //! \param update_interval Interval in milliseconds between two calls to the update member
         //! function.
         Window(unsigned width, unsigned height, bool fullscreen = false,
-            double update_interval = 16.666666);
+            double update_interval = 16.666666, bool resizable = false);
         virtual ~Window();
 
         unsigned width() const;
         unsigned height() const;
         bool fullscreen() const;
+        bool resizable() const;
         void resize(unsigned width, unsigned height, bool fullscreen);
-        
+
         double update_interval() const;
         void set_update_interval(double update_interval);
 
@@ -68,7 +54,7 @@ namespace Gosu
         virtual void show();
         
         //! EXPERIMENTAL - MAY DISAPPEAR WITHOUT WARNING.
-        //! Performs a single mainloop step.
+        //! Performs a single main loop step.
         //! This method is only useful if you want to integrate Gosu with another library that has
         //! its own main loop.
         //! This method implicitly shows the window if it was hidden before, and returns false when
@@ -109,7 +95,7 @@ namespace Gosu
 
         //! Called before update when the user presses a button while the window has the focus.
         //! By default, this will toggle fullscreen mode if the user presses Alt+Enter (Windows,
-        //! Linux) or cmd+F (macOS).
+        //! Linux), cmd+F (macOS), or F11 (on all operating systems).
         //! To support these shortcuts in your application, make sure to call Window::button_down
         //! in your implementation.
         virtual void button_down(Gosu::Button);
@@ -118,10 +104,10 @@ namespace Gosu
         virtual void button_up(Gosu::Button) {}
 
         //! Called when a file is dropped onto the window.
-        //! \param path The filename of the dropped file. When multiple files are dropped, this
+        //! \param filename The filename of the dropped file. When multiple files are dropped, this
         //! method will be called several times.
         virtual void drop(const std::string& filename) {}
-        
+
         // Ignore when SWIG is wrapping this class for Ruby/Gosu.
         #ifndef SWIG
         // Callbacks for touch events. So far these are only used on iOS.
@@ -138,7 +124,29 @@ namespace Gosu
         #endif
         
         #ifdef GOSU_IS_IPHONE
-        void* UIWindow() const;
+        void* uikit_window() const;
         #endif
     };
+
+    //! Returns the width (in pixels) of a screen.
+    //! \param window The result describes the screen on which the window is shown, or the
+    //!               primary screen if no window is given.
+    unsigned screen_width(Window* window = nullptr);
+    
+    //! Returns the height (in pixels) of the user's primary screen.
+    //! \param window The result describes the screen on which the window is shown, or the
+    //!               primary screen if no window is given.
+    unsigned screen_height(Window* window = nullptr);
+    
+    //! Returns the maximum width (in 'points') that is available for a non-fullscreen Window.
+    //! All windows larger than this size will automatically be shrunk to fit.
+    //! \param window The result describes the screen on which the window is shown, or the
+    //!               primary screen if no window is given.
+    unsigned available_width(Window* window = nullptr);
+    
+    //! Returns the maximum height (in 'points') that is available for a non-fullscreen Window.
+    //! All windows larger than this size will automatically be shrunk to fit.
+    //! \param window The result describes the screen on which the window is shown, or the
+    //!               primary screen if no window is given.
+    unsigned available_height(Window* window = nullptr);
 }

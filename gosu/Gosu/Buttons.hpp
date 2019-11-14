@@ -66,7 +66,7 @@ namespace Gosu
         KB_APOSTROPHE      = 52,
         KB_COMMA           = 54,
         KB_PERIOD          = 55,
-        KB_SLASH           = 49,
+        KB_SLASH           = 56,
         KB_A               = 4,
         KB_B               = 5,
         KB_C               = 6,
@@ -93,7 +93,7 @@ namespace Gosu
         KB_X               = 27,
         KB_Y               = 28,
         KB_Z               = 29,
-        KB_ISO             = 100, // ` on US/UK macOS, < ON EU macOS, \ in US/UK Windows
+        KB_ISO             = 100, // ` on US/UK macOS, < on EU macOS, \ on US/UK Windows
         KB_NUMPAD_0        = 98,
         KB_NUMPAD_1        = 89,
         KB_NUMPAD_2        = 90,
@@ -104,6 +104,7 @@ namespace Gosu
         KB_NUMPAD_7        = 95,
         KB_NUMPAD_8        = 96,
         KB_NUMPAD_9        = 97,
+        KB_NUMPAD_DELETE   = 99,
         KB_NUMPAD_PLUS     = 87,
         KB_NUMPAD_MINUS    = 86,
         KB_NUMPAD_MULTIPLY = 85,
