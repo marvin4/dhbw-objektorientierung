@@ -49,7 +49,7 @@ Gosu::Color(0xff007000),Gosu::Color(0xff000070),Gosu::Color(0xffff7000),Gosu::Co
 	void Spielfeld::upanzPlatzSpielsteine() {
 		this->anzPlatzSpielsteine = this->anzPlatzSpielsteine + 1;
 		if(this->anzPlatzSpielsteine==25){
-			for (bool elem : formen5) {
+			for (bool elem : formen5_1) {
 				this->formen.push_back(elem);
 			}
 		}

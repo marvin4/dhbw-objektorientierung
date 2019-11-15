@@ -18,16 +18,20 @@ class GameWindow : public Gosu::Window
 {
 	int hoehePxlSpielfeld;
 	int hoehePxlAbschnitt;
+	int hintergrund = 0;
 	Menue menue;
 	Spielfeld spielfeld;
 	AktiverSpielstein aktiverSpielstein;
 	Gosu::Font font;
-	Gosu::Image hintergrund;
+	//Gosu::Image hintergrund;
+	std::vector<std::shared_ptr<Gosu::Image>>hintergruende;
+	std::shared_ptr<Gosu::Image>ptr_hintergrund;
+	std::vector<std::string> pfade = {"media/Unterwasser1920x1080.png","media/Holz1920x1080.png"};
 public:
 	
 	
 	GameWindow()
-		: Window(800, 600,false,1/60,true),font(20),hintergrund("media/HintergrundHolz800x600.png")
+		: Window(800, 600,false,1/60,true),font(20)//,hintergrund("media/HintergrundHolz800x600.png")
 	{
 		set_caption("Testspiel");
 		hoehePxlSpielfeld = (std::min(width(), height())- (std::min(width(), height())%SPIELFELD_BREITE));
@@ -35,6 +39,10 @@ public:
 		spielfeld.reset();
 		spielfeld.formen = formen4;
 		std::shared_ptr<Gosu::Font> ptr_font = std::make_shared<Gosu::Font>(font);
+		for (std::string elem : pfade) {
+			hintergruende.push_back(std::make_shared<Gosu::Image>(Gosu::Image(elem)));
+		}
+		ptr_hintergrund = hintergruende.at(hintergrund);
 		menue.set_schrift(ptr_font);
 	}
 	
@@ -45,7 +53,9 @@ public:
 	{	
 		hoehePxlSpielfeld = (std::min(width(), height()) - (std::min(width(), height()) % SPIELFELD_BREITE));
 		hoehePxlAbschnitt = (hoehePxlSpielfeld / SPIELFELD_BREITE);
-		hintergrund.draw(0, 0, 0,double(width())/double(hintergrund.width()),double(height())/double(hintergrund.height()));
+		//hintergrund.draw(0, 0, 0,double(width())/double(hintergrund.width()),double(height())/double(hintergrund.height()));//ohne pointer
+		//ptr_hintergrund->draw(0, 0, 0, double(width()) / double(ptr_hintergrund->width()), double(height()) / double(ptr_hintergrund->height()));mit skalierung
+		ptr_hintergrund->draw(0,0, 0, 1.0,1.0);
 		menue.scale = double(width() - hoehePxlSpielfeld) / 200.0;
 		menue.set_pos({int(hoehePxlSpielfeld+20*menue.scale),int(20+menue.scale*200)});
 		menue.windowBreite = width();
@@ -66,8 +76,9 @@ public:
 	void update() override
 	{
 		
-		std::cout << Gosu::fps() << std::endl;
+		//std::cout << Gosu::fps() << std::endl;
 		//std::cout << spielfeld.hatPlatzFuerSpielstein(aktiverSpielstein);
+		menue.update();
 	}
 
 	void button_down(Gosu::Button button) override
@@ -79,6 +90,21 @@ public:
 		else {
 			Window::button_down(button);
 		}
+		switch (menue.get_status()) {
+		case(inaktiv):
+			if (button == Gosu::KB_M) {
+				menue.set_status(aktiv);
+			}
+			break;
+		case(aktiv):
+			if (button == Gosu::KB_M) {
+				menue.set_status(inaktiv);
+			}
+			break;
+		case(einstellungen):
+
+			break;
+		}
 	}
 
 	void button_up(Gosu::Button button) override
@@ -87,22 +113,22 @@ public:
 		if (button == Gosu::KB_LEFT) {//Spiel Steuerung
 			aktiverSpielstein.linksBewegen();
 		}
-		if (button == Gosu::KB_RIGHT) {
+		else if (button == Gosu::KB_RIGHT) {
 			aktiverSpielstein.rechtsBewegen();
 		}
-		if (button == Gosu::KB_UP) {
+		else if (button == Gosu::KB_UP) {
 			aktiverSpielstein.obenBewegen();
 		}
-		if (button == Gosu::KB_DOWN) {
+		else if (button == Gosu::KB_DOWN) {
 			aktiverSpielstein.untenBewegen();
 		}
-		if (button == Gosu::KB_PAGE_UP) {
+		else if (button == Gosu::KB_PAGE_UP) {
 			aktiverSpielstein.linksRotieren();
 		}
-		if (button == Gosu::KB_PAGE_DOWN) {
+		else if (button == Gosu::KB_PAGE_DOWN) {
 			aktiverSpielstein.rechtsRotieren();
 		}
-		if (button == Gosu::KB_SPACE) {
+		else if (button == Gosu::KB_SPACE) {
 			if (aktiverSpielstein.platzieren(spielfeld)) {
 				 int y = aktiverSpielstein.get_y();
 				 int x = aktiverSpielstein.get_x();

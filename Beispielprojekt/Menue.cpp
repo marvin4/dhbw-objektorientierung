@@ -11,9 +11,31 @@ void Menue::text(std::string s,Gosu::Color c)
 	this->pos.y = this->pos.y + 40 *this->scale;
 }
 
+void Menue::update()
+{
+
+	if (this->winkel == 359) {
+		this->winkel=0;
+	}
+	else {
+		this->winkel=this->winkel+1;
+	}
+}
+
 Status Menue::get_status()
 {
 	return Status();
+}
+
+void Menue::set_status(Status s)
+{
+	this->vStatus = this->status;
+	this->status = s;
+}
+
+Status Menue::get_vStatus()
+{
+	return this->vStatus;
 }
 
 //bool Menue::set_windowSize(unsigned int maxHoehe,unsigned int maxBreite,unsigned int hoehe,unsigned int breite)
@@ -61,8 +83,8 @@ void Menue::draw()
 		this->text("E: Einstellungen");
 		this->text("Enter: neues Spiel");
 		text_scale = this->spielfeldLaenge / this->schrift->text_width(SpielendeNachricht);
-		this->schrift->draw_text_rel(SpielendeNachricht,this->spielfeldLaenge/2,this->spielfeldLaenge/2,5,0.5,0.5,text_scale,text_scale,Gosu::interpolate(this->textHervorheben,Gosu::Color(0x70d00000)),Gosu::AM_INTERPOLATE);
-		Gosu::rot
+		//this->schrift->draw_text_rel(SpielendeNachricht,this->spielfeldLaenge/2,this->spielfeldLaenge/2,5,0.5,0.5,text_scale,text_scale,Gosu::interpolate(this->textHervorheben,Gosu::Color(0x70d00000)),Gosu::AM_INTERPOLATE);
+		Gosu::Graphics::transform(Gosu::rotate(this->winkel, this->spielfeldLaenge / 2, this->spielfeldLaenge / 2), [&] {this->schrift->draw_text_rel(SpielendeNachricht, this->spielfeldLaenge / 2, this->spielfeldLaenge / 2, 5, 0.5, 0.5, text_scale, text_scale, Gosu::interpolate(this->textHervorheben, Gosu::Color(0x70d00000)), Gosu::AM_INTERPOLATE); });
 		break;
 	default:
 		this->text("M: Menü anzeigen");
