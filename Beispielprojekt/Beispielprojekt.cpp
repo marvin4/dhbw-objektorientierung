@@ -34,6 +34,8 @@ public:
 		hoehePxlAbschnitt = (hoehePxlSpielfeld / SPIELFELD_BREITE);
 		spielfeld.reset();
 		spielfeld.formen = formen4;
+		std::shared_ptr<Gosu::Font> ptr_font = std::make_shared<Gosu::Font>(font);
+		menue.set_schrift(ptr_font);
 	}
 	
 	// wird bis zu 60x pro Sekunde aufgerufen.
@@ -43,23 +45,29 @@ public:
 	{	
 		hoehePxlSpielfeld = (std::min(width(), height()) - (std::min(width(), height()) % SPIELFELD_BREITE));
 		hoehePxlAbschnitt = (hoehePxlSpielfeld / SPIELFELD_BREITE);
-		hintergrund.draw(0, 0, 0,width()/800.,height()/600.0);
-		if (true) {
+		hintergrund.draw(0, 0, 0,double(width())/double(hintergrund.width()),double(height())/double(hintergrund.height()));
+		menue.scale = double(width() - hoehePxlSpielfeld) / 200.0;
+		menue.set_pos({int(hoehePxlSpielfeld+20*menue.scale),int(20+menue.scale*200)});
+		menue.windowBreite = width();
+		menue.windowHoehe=height();
+		menue.spielfeldLaenge = hoehePxlSpielfeld;
+		
 			Gosu::Graphics::draw_rect(0, 0, hoehePxlSpielfeld, hoehePxlSpielfeld, Gosu::Color(0x20000000), 1, Gosu::AM_INTERPOLATE);
 			spielfeld.draw(this->hoehePxlAbschnitt);
 			aktiverSpielstein.draw(this->hoehePxlAbschnitt);
-			font.draw_text("Spielzeit: " + std::to_string(int(spielfeld.dauer() / 60)) + "min " + std::to_string(int(spielfeld.dauer()) % 60) + "s", hoehePxlSpielfeld + 20, 50, 5, 1, 1, Gosu::Color::BLACK);
-			font.draw_text("Punktestand: " + std::to_string(spielfeld.get_score()), hoehePxlSpielfeld + 20, 100, 5, 1, 1, Gosu::Color::BLACK);
-			font.draw_text("Platzierte Teile: " + std::to_string(spielfeld.get_anzPlatzSpielsteine()), hoehePxlSpielfeld + 20, 150, 5, 1, 1, Gosu::Color::BLACK);
-		}
+			menue.draw();
+			font.draw_text("Spielzeit: " + std::to_string(int(spielfeld.dauer() / 60)) + "min " + std::to_string(int(spielfeld.dauer()) % 60) + "s", hoehePxlSpielfeld + 20*menue.scale, 20+menue.scale*50, 5, menue.scale, menue.scale, Gosu::Color::BLACK);
+			font.draw_text("Punktestand: " + std::to_string(spielfeld.get_score()), hoehePxlSpielfeld + 20*menue.scale, 20+menue.scale*100, 5, menue.scale, menue.scale, Gosu::Color::BLACK);
+			font.draw_text("Platzierte Teile: " + std::to_string(spielfeld.get_anzPlatzSpielsteine()), hoehePxlSpielfeld + 20*menue.scale, 20+150*menue.scale, 5, menue.scale, menue.scale, Gosu::Color::BLACK);
+		
 	}
 
 	// Wird 60x pro Sekunde aufgerufen
 	void update() override
 	{
 		
-		//std::cout << Gosu::fps() << std::endl;
-		std::cout << spielfeld.hatPlatzFuerSpielstein(aktiverSpielstein);
+		std::cout << Gosu::fps() << std::endl;
+		//std::cout << spielfeld.hatPlatzFuerSpielstein(aktiverSpielstein);
 	}
 
 	void button_down(Gosu::Button button) override
