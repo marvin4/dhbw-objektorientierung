@@ -176,7 +176,6 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="Icon.ico" />
-    <Image Include="media\HintergrundHolz800x600.png" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Beispielprojekt.rc" />

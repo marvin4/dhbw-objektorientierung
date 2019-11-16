@@ -22,7 +22,7 @@ class Menue
 public:
 	double scale=1;
 	void update();
-	int windowHoehe = 600, windowBreite = 800,spielfeldLaenge = 600;
+	int windowHoehe = 600, windowBreite = 800,spielfeldLaenge = 600,hintergrund=0;
 	Gosu::Color textfarbe = Gosu::Color::BLACK;
 	Gosu::Color textHervorheben = Gosu::Color::RED;
 	Status get_status();

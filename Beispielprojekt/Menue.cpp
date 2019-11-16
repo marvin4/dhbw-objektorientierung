@@ -68,7 +68,8 @@ void Menue::draw()
 	switch (this->status)
 	{
 	case(einstellungen):
-		this->text("WIP");
+		this->text("WIP",this->textHervorheben);
+		this->text("Hintergrund: "+std::to_string(this->hintergrund+1));
 		break;
 	case(aktiv):
 		this->text("Funktionen:",this->textHervorheben);

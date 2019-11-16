@@ -18,7 +18,7 @@ class GameWindow : public Gosu::Window
 {
 	int hoehePxlSpielfeld;
 	int hoehePxlAbschnitt;
-	int hintergrund = 0;
+	//int hintergrund = 0;
 	Menue menue;
 	Spielfeld spielfeld;
 	AktiverSpielstein aktiverSpielstein;
@@ -42,7 +42,7 @@ public:
 		for (std::string elem : pfade) {
 			hintergruende.push_back(std::make_shared<Gosu::Image>(Gosu::Image(elem)));
 		}
-		ptr_hintergrund = hintergruende.at(hintergrund);
+		ptr_hintergrund = hintergruende.at(menue.hintergrund);
 		menue.set_schrift(ptr_font);
 	}
 	
@@ -61,6 +61,7 @@ public:
 		menue.windowBreite = width();
 		menue.windowHoehe=height();
 		menue.spielfeldLaenge = hoehePxlSpielfeld;
+		menue.set_status(einstellungen);
 		
 			Gosu::Graphics::draw_rect(0, 0, hoehePxlSpielfeld, hoehePxlSpielfeld, Gosu::Color(0x20000000), 1, Gosu::AM_INTERPOLATE);
 			spielfeld.draw(this->hoehePxlAbschnitt);
@@ -87,24 +88,44 @@ public:
 		if (button == Gosu::KB_ESCAPE) {
 			close();
 		}
-		else {
-			Window::button_down(button);
-		}
+		//std::cout << "??????" << std::endl;
 		switch (menue.get_status()) {
-		case(inaktiv):
-			if (button == Gosu::KB_M) {
-				menue.set_status(aktiv);
+			case(inaktiv):
+				if (button == Gosu::KB_M) {
+					menue.set_status(aktiv);
+				}
+				break;
+			case(aktiv):
+				if (button == Gosu::KB_M) {
+					menue.set_status(inaktiv);
+				}
+				break;
+			case(einstellungen):
+				std::cout << "einstellungen"<<std::endl;;
+				if ((button == Gosu::KB_E )||( button == Gosu::KB_ENTER)) {
+					menue.set_status(menue.get_vStatus());
+				}
+				else if (button == Gosu::KB_M) {
+					menue.set_status(inaktiv);
+				}
+				else if (button == Gosu::KB_W) {
+					std::cout << menue.hintergrund << std::endl;;
+					menue.hintergrund = Gosu::wrap(menue.hintergrund + 1, 0, hintergruende.size());
+					ptr_hintergrund = hintergruende.at(menue.hintergrund);
+				}
+				/*else if (button == Gosu::KB_LEFT) {
+					menue.hintergrund = Gosu::wrap(menue.hintergrund - 1, 0, hintergruende.size());
+					ptr_hintergrund = hintergruende.at(menue.hintergrund);
+				}*/
+				break;
+			default:
+				std::cout <<" ? ? ? ? ? "<< std::endl;
+				break;
+					
+				
+				
 			}
-			break;
-		case(aktiv):
-			if (button == Gosu::KB_M) {
-				menue.set_status(inaktiv);
-			}
-			break;
-		case(einstellungen):
-
-			break;
-		}
+		Window::button_down(button);
 	}
 
 	void button_up(Gosu::Button button) override
