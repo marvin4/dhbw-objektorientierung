@@ -22,8 +22,9 @@ class GameWindow : public Gosu::Window
 	Menue menue;
 	Spielfeld spielfeld;
 	AktiverSpielstein aktiverSpielstein;
-	Gosu::Font font;
+	//Gosu::Font font;
 	//Gosu::Image hintergrund;
+	std::shared_ptr<Gosu::Font> ptr_font;
 	std::vector<std::shared_ptr<Gosu::Image>>hintergruende;
 	std::shared_ptr<Gosu::Image>ptr_hintergrund;
 	std::vector<std::string> pfade = {"media/Unterwasser1920x1080.png","media/Holz1920x1080.png"};
@@ -31,14 +32,14 @@ public:
 	
 	
 	GameWindow()
-		: Window(800, 600,false,1/60,true),font(20)//,hintergrund("media/HintergrundHolz800x600.png")
+		: Window(800, 600,false,1/60,true)//,font(20)//,hintergrund("media/HintergrundHolz800x600.png")
 	{
 		set_caption("Testspiel");
 		hoehePxlSpielfeld = (std::min(width(), height())- (std::min(width(), height())%SPIELFELD_BREITE));
 		hoehePxlAbschnitt = (hoehePxlSpielfeld / SPIELFELD_BREITE);
 		spielfeld.reset();
 		spielfeld.formen = formen4;
-		std::shared_ptr<Gosu::Font> ptr_font = std::make_shared<Gosu::Font>(font);
+		ptr_font = std::make_shared<Gosu::Font>(Gosu::Font(20));
 		for (std::string elem : pfade) {
 			hintergruende.push_back(std::make_shared<Gosu::Image>(Gosu::Image(elem)));
 		}
@@ -61,15 +62,13 @@ public:
 		menue.windowBreite = width();
 		menue.windowHoehe=height();
 		menue.spielfeldLaenge = hoehePxlSpielfeld;
-		menue.set_status(einstellungen);
-		
 			Gosu::Graphics::draw_rect(0, 0, hoehePxlSpielfeld, hoehePxlSpielfeld, Gosu::Color(0x20000000), 1, Gosu::AM_INTERPOLATE);
 			spielfeld.draw(this->hoehePxlAbschnitt);
 			aktiverSpielstein.draw(this->hoehePxlAbschnitt);
 			menue.draw();
-			font.draw_text("Spielzeit: " + std::to_string(int(spielfeld.dauer() / 60)) + "min " + std::to_string(int(spielfeld.dauer()) % 60) + "s", hoehePxlSpielfeld + 20*menue.scale, 20+menue.scale*50, 5, menue.scale, menue.scale, Gosu::Color::BLACK);
-			font.draw_text("Punktestand: " + std::to_string(spielfeld.get_score()), hoehePxlSpielfeld + 20*menue.scale, 20+menue.scale*100, 5, menue.scale, menue.scale, Gosu::Color::BLACK);
-			font.draw_text("Platzierte Teile: " + std::to_string(spielfeld.get_anzPlatzSpielsteine()), hoehePxlSpielfeld + 20*menue.scale, 20+150*menue.scale, 5, menue.scale, menue.scale, Gosu::Color::BLACK);
+			ptr_font->draw_text("Spielzeit: " + std::to_string(int(spielfeld.dauer() / 60)) + "min " + std::to_string(int(spielfeld.dauer()) % 60) + "s", hoehePxlSpielfeld + 20*menue.scale, 20+menue.scale*50, 5, menue.scale, menue.scale, Gosu::Color::BLACK);
+			ptr_font->draw_text("Punktestand: " + std::to_string(spielfeld.get_score()), hoehePxlSpielfeld + 20*menue.scale, 20+menue.scale*100, 5, menue.scale, menue.scale, Gosu::Color::BLACK);
+			ptr_font->draw_text("Platzierte Teile: " + std::to_string(spielfeld.get_anzPlatzSpielsteine()), hoehePxlSpielfeld + 20*menue.scale, 20+150*menue.scale, 5, menue.scale, menue.scale, Gosu::Color::BLACK);
 		
 	}
 
@@ -88,21 +87,27 @@ public:
 		if (button == Gosu::KB_ESCAPE) {
 			close();
 		}
-		//std::cout << "??????" << std::endl;
-		switch (menue.get_status()) {
+		else {//std::cout << "??????" <<menue.get_status()<< std::endl;
+			switch (menue.get_status()) {
 			case(inaktiv):
 				if (button == Gosu::KB_M) {
 					menue.set_status(aktiv);
+				}
+				else if (button == Gosu::KB_E) {
+					menue.set_status(einstellungen);
 				}
 				break;
 			case(aktiv):
 				if (button == Gosu::KB_M) {
 					menue.set_status(inaktiv);
 				}
+				else if (button == Gosu::KB_E) {
+					menue.set_status(einstellungen);
+				}
 				break;
 			case(einstellungen):
-				std::cout << "einstellungen"<<std::endl;;
-				if ((button == Gosu::KB_E )||( button == Gosu::KB_ENTER)) {
+				//std::cout << "einstellungen"<<std::endl;;
+				if ((button == Gosu::KB_E) || (button == Gosu::KB_ENTER)) {
 					menue.set_status(menue.get_vStatus());
 				}
 				else if (button == Gosu::KB_M) {
@@ -110,7 +115,7 @@ public:
 				}
 				else if (button == Gosu::KB_W) {
 					std::cout << menue.hintergrund << std::endl;;
-					menue.hintergrund = Gosu::wrap(menue.hintergrund + 1, 0, hintergruende.size());
+					menue.hintergrund = Gosu::wrap(menue.hintergrund + 1, 0, int(hintergruende.size()));
 					ptr_hintergrund = hintergruende.at(menue.hintergrund);
 				}
 				/*else if (button == Gosu::KB_LEFT) {
@@ -118,14 +123,21 @@ public:
 					ptr_hintergrund = hintergruende.at(menue.hintergrund);
 				}*/
 				break;
-			default:
-				std::cout <<" ? ? ? ? ? "<< std::endl;
+			case(spielende):
+				if ((button==Gosu::KB_R) || (button==Gosu::KB_ENTER)) {
+					spielfeld.reset();
+					menue.set_status(aktiv);
+				}
+				else if (button==Gosu::KB_E) {
+					menue.set_status(einstellungen);
+				}
 				break;
-					
+			default:
+				//std::cout <<" ? ? ? ? ? "<< std::endl;
 				
-				
+				break;
 			}
-		Window::button_down(button);
+		}	Window::button_down(button);
 	}
 
 	void button_up(Gosu::Button button) override

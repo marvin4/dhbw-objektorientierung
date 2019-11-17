@@ -23,8 +23,14 @@ struct Feld {
 	bool status;
 	Gosu::Color farbe;
 };
-struct koord {
+struct Koord {
 	 int x, y;
+};
+struct Farbschema {
+	std::string name="standard";
+	std::vector < Gosu::Color> farben = { Gosu::Color(0xffdf0000),Gosu::Color(0xff0000df) ,Gosu::Color(0xff00df00) ,Gosu::Color(0xffdfdf00),Gosu::Color(0xff700000),
+	Gosu::Color(0xff007000),Gosu::Color(0xff000070),Gosu::Color(0xffff7000),Gosu::Color(0xff007070)
+	};
 };
 class Spielstein {
 protected:
@@ -47,7 +53,7 @@ class Spielfeld
 	std::array<std::array<Feld,SPIELFELD_BREITE>,SPIELFELD_BREITE> zustand;
 	int64_t score;
 	time_t startzeit;
-	koord refpos = {0,0};//obere linke Ecke
+	Koord refpos = {0,0};//obere linke Ecke
 	int anzPlatzSpielsteine;
 	
 	//int hoehePxlSpielfeld;
@@ -75,7 +81,7 @@ public:
 
 
 class AktiverSpielstein : public Spielstein {
-	koord positionAufSpielfeld;//Position von linker Ecke aus
+	Koord positionAufSpielfeld;//Position von linker Ecke aus
 public:
 	//AktiverSpielstein(AktiverSpielstein const& kopie);//nutzbar falls Spielsteine erstellt werden aber nicht direkt auf dem Spielfeld sind
 	AktiverSpielstein();

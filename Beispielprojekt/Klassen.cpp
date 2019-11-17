@@ -21,6 +21,7 @@ Gosu::Color(0xff007000),Gosu::Color(0xff000070),Gosu::Color(0xffff7000),Gosu::Co
 		this->startzeit = time(NULL);
 		this->score = 0;
 		this->anzPlatzSpielsteine = 0;
+		this->formen.resize(7);
 		srand(time(NULL));
 		
 	}

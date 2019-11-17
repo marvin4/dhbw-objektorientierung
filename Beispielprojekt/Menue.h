@@ -17,7 +17,7 @@ class Menue
 	//Status status=einstellungen;
 	Status status = einstellungen;
 	std::shared_ptr<Gosu::Font> schrift=nullptr;
-	koord pos = {0,0};
+	Koord pos = {0,0};
 	Status vStatus = aktiv;
 public:
 	double scale=1;
@@ -32,8 +32,9 @@ public:
 	/*Menue();*/
 	void set_schrift(std::shared_ptr<Gosu::Font> s);
 	void draw();
-	void set_pos(koord p);
+	void set_pos(Koord p);
 private:
-	void text(std::string s,Gosu::Color c =NULL);
+	void text(std::string s);
+	void text(std::string s,Gosu::Color c);
 };
 
