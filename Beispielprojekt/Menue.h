@@ -8,7 +8,15 @@ enum Status
 	inaktiv,aktiv,einstellungen,spielende
 };
 
-	
+struct Farbschema {
+	std::string name = "standard";
+	std::vector < Gosu::Color> farben = { Gosu::Color(0xffdf0000),Gosu::Color(0xff0000df) ,Gosu::Color(0xff00df00) ,Gosu::Color(0xffdfdf00),Gosu::Color(0xff700000),
+	Gosu::Color(0xff007000),Gosu::Color(0xff000070),Gosu::Color(0xffff7000),Gosu::Color(0xff007070)
+	};
+};
+struct Design {
+	std::string name;
+};
 
 class Menue
 {

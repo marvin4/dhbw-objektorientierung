@@ -12,7 +12,7 @@
 #include "Menue.h"
 
 // Simulationsgeschwindigkeit
-const double DT = 100.0;
+//const double DT = 100.0;
 
 class GameWindow : public Gosu::Window
 {
@@ -117,6 +117,10 @@ public:
 					std::cout << menue.hintergrund << std::endl;;
 					menue.hintergrund = Gosu::wrap(menue.hintergrund + 1, 0, int(hintergruende.size()));
 					ptr_hintergrund = hintergruende.at(menue.hintergrund);
+				}
+				else if (button == Gosu::KB_R) {
+					spielfeld.reset();
+					menue.set_status(aktiv);
 				}
 				/*else if (button == Gosu::KB_LEFT) {
 					menue.hintergrund = Gosu::wrap(menue.hintergrund - 1, 0, hintergruende.size());
