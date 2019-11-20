@@ -52,8 +52,8 @@ public:
 	// dann werden `draw` Aufrufe ausgelassen und die Framerate sinkt
 	void draw() override
 	{	
-		hoehePxlSpielfeld = (std::min(width(), height()) - (std::min(width(), height()) % SPIELFELD_BREITE));
-		hoehePxlAbschnitt = (hoehePxlSpielfeld / SPIELFELD_BREITE);
+		//hoehePxlSpielfeld = (std::min(width(), height()) - (std::min(width(), height()) % SPIELFELD_BREITE));
+		//hoehePxlAbschnitt = (hoehePxlSpielfeld / SPIELFELD_BREITE);
 		//hintergrund.draw(0, 0, 0,double(width())/double(hintergrund.width()),double(height())/double(hintergrund.height()));//ohne pointer
 		//ptr_hintergrund->draw(0, 0, 0, double(width()) / double(ptr_hintergrund->width()), double(height()) / double(ptr_hintergrund->height()));mit skalierung
 		ptr_hintergrund->draw(0,0, 0, 1.0,1.0);
@@ -126,10 +126,6 @@ public:
 					spielfeld.reset();
 					menue.set_status(aktiv);
 				}
-				/*else if (button == Gosu::KB_LEFT) {
-					menue.hintergrund = Gosu::wrap(menue.hintergrund - 1, 0, hintergruende.size());
-					ptr_hintergrund = hintergruende.at(menue.hintergrund);
-				}*/
 				break;
 			case(spielende):
 				if ((button==Gosu::KB_R)||(button==Gosu::KB_ENTER)) {
@@ -141,7 +137,7 @@ public:
 				}
 				break;
 			default:
-				//std::cout <<" ? ? ? ? ? "<< std::endl;
+				
 				
 				break;
 			}
@@ -173,8 +169,6 @@ public:
 			if (aktiverSpielstein.platzieren(spielfeld)) {
 				 int y = aktiverSpielstein.get_y();
 				 int x = aktiverSpielstein.get_x();
-				// int s = 0;
-				// int z = 0;
 				 int reihen = 0;
 				auto zustand = spielfeld.get_zustand();
 				for ( int i = y; i < (y + 4); i++) {//Darf nich fuer Bereiche ausserhalb des Spielfelds ausgefuehrt werden
@@ -216,8 +210,7 @@ public:
 				}
 				spielfeld.upanzPlatzSpielsteine();
 				aktiverSpielstein.neu(spielfeld.formen);
-				//std::cout <<"     "<< spielfeld.hatPlatzFuerSpielstein(aktiverSpielstein)<<"\n";//test
-				if (!spielfeld.hatPlatzFuerSpielstein(aktiverSpielstein)) {
+				if (!spielfeld.hatPlatzFuerSpielstein(aktiverSpielstein)) {//Bedingung fuer Spielende
 					this->menue.set_status(spielende);
 				}
 			}
