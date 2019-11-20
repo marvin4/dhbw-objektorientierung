@@ -115,3 +115,8 @@ void Menue::set_pos(Koord p)
 {
 	this->pos = p;
 }
+
+void Menue::resize(int hoehe, int breite)
+{
+	
+}
