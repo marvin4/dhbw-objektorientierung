@@ -212,6 +212,7 @@ public:
 				}
 				spielfeld.upanzPlatzSpielsteine();
 				aktiverSpielstein.neu(spielfeld.formen);
+				std::cout <<"     "<< spielfeld.hatPlatzFuerSpielstein(aktiverSpielstein)<<"\n";//test
 			}
 		}
 		

@@ -103,13 +103,15 @@ Gosu::Color(0xff007000),Gosu::Color(0xff000070),Gosu::Color(0xffff7000),Gosu::Co
 		while ((!r)&&(n < 4)) {
 			int z = spielstein.zeilen();
 			int s = spielstein.spalten();
-			int x = 0;
 			int y = 0;
-			while ((!r)&&(y <( SPIELFELD_BREITE - z))) {
-				while ((!r)&&(x <( SPIELFELD_BREITE - s))) {
+			while ((!r)&&(y <( SPIELFELD_BREITE - z+1))) {
+				//std::cout <<"y:"<< y;
+				int x = 0;
+				while ((!r)&&(x <( SPIELFELD_BREITE - s+1))) {
 					r = true;
-					for (int i = 0; i < z; i++) {
-						for (int j = 0; j < s; j++) {
+					//std::cout <<"x:"<< x;
+					for (int i = 0; i < 4; i++) {
+						for (int j = 0; j < 4; j++) {
 							if (spielstein.form[i][j] && this->zustand.at(y + i).at(x + j).status) {
 								r = false;
 							}
@@ -117,8 +119,10 @@ Gosu::Color(0xff007000),Gosu::Color(0xff000070),Gosu::Color(0xffff7000),Gosu::Co
 						
 					}
 					x=x+1;
+					
 				}
 				y=y+1;
+				
 			}
 			if (n<3) {
 				spielstein.rotiere();
