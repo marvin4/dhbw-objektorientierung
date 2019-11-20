@@ -5,7 +5,7 @@
 
 #include <vector>
 #include <string>
-#include <iostream>
+//#include <iostream>
 
 //#include Eigene Klassen
 #include "Klassen.h"
@@ -37,8 +37,8 @@ public:
 		set_caption("Testspiel");
 		hoehePxlSpielfeld = (std::min(width(), height())- (std::min(width(), height())%SPIELFELD_BREITE));
 		hoehePxlAbschnitt = (hoehePxlSpielfeld / SPIELFELD_BREITE);
-		spielfeld.reset();
 		spielfeld.formen = formen4;
+		spielfeld.reset();
 		ptr_font = std::make_shared<Gosu::Font>(Gosu::Font(20));
 		for (std::string elem : pfade) {
 			hintergruende.push_back(std::make_shared<Gosu::Image>(Gosu::Image(elem)));
@@ -128,7 +128,7 @@ public:
 				}*/
 				break;
 			case(spielende):
-				if ((button==Gosu::KB_R) || (button==Gosu::KB_ENTER)) {
+				if ((button==Gosu::KB_R)||(button==Gosu::KB_ENTER)) {
 					spielfeld.reset();
 					menue.set_status(aktiv);
 				}
@@ -212,7 +212,10 @@ public:
 				}
 				spielfeld.upanzPlatzSpielsteine();
 				aktiverSpielstein.neu(spielfeld.formen);
-				std::cout <<"     "<< spielfeld.hatPlatzFuerSpielstein(aktiverSpielstein)<<"\n";//test
+				//std::cout <<"     "<< spielfeld.hatPlatzFuerSpielstein(aktiverSpielstein)<<"\n";//test
+				if (!spielfeld.hatPlatzFuerSpielstein(aktiverSpielstein)) {
+					this->menue.set_status(spielende);
+				}
 			}
 		}
 		
