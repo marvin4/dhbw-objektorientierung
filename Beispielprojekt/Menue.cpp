@@ -47,24 +47,7 @@ Status Menue::get_vStatus()
 	return this->vStatus;
 }
 
-//bool Menue::set_windowSize(unsigned int maxHoehe,unsigned int maxBreite,unsigned int hoehe,unsigned int breite)
-//{
-//	int r = false;
-//	hoehe = Gosu::clamp(hoehe, unsigned int(0), maxHoehe);
-//	breite = Gosu::clamp(breite, unsigned int(0), maxBreite);
-//	if ((hoehe < breite)&&(breite-hoehe>160)&&(hoehe>100)) {
-//		r = true;
-//		
-//	}
-//	return r;
-//}
 
-//Menue::Menue()
-//{
-//	this->status = einstellungen;
-//	this->menueHoehe = 600;
-//	this->menueBreite = 800;
-//}
 
 void Menue::set_schrift(std::shared_ptr<Gosu::Font> s)
 {
@@ -116,7 +99,23 @@ void Menue::set_pos(Koord p)
 	this->pos = p;
 }
 
-void Menue::resize(int hoehe, int breite)
+void Menue::resize(int hoehe, int breite,int laenge)
 {
-	
+	this->windowHoehe = hoehe;
+	this->windowBreite = breite;
+	this->spielfeldLaenge = laenge;
+	if (abs(breite-hoehe)>Gosu::available_width()/10) {
+	if (breite > hoehe) {
+		this->menueBreite = breite - laenge;
+		this->menueHoehe = hoehe;
+	}
+	else {
+		this->menueHoehe = hoehe - laenge;
+		this->menueBreite = breite;
+	}
+	}
+	else {
+
+	}
+
 }

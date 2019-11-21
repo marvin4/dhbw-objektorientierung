@@ -75,10 +75,10 @@ public:
 	// Wird 60x pro Sekunde aufgerufen
 	void update() override
 	{
-		if (!(this->height() == this->menue.windowHoehe || this->width() == this->menue.windowBreite)) {//Falls sich die Fenstergroesse geaendert hat 
+		if (!(this->height() == this->menue.windowHoehe && this->width() == this->menue.windowBreite)) {//Falls sich die Fenstergroesse geaendert hat 
 			hoehePxlSpielfeld = (std::min(width(), height()) - (std::min(width(), height()) % SPIELFELD_BREITE));
 			hoehePxlAbschnitt = (hoehePxlSpielfeld / SPIELFELD_BREITE);
-			menue.resize(height(), width());
+			menue.resize(height(), width(),hoehePxlSpielfeld);
 		}
 		//std::cout << Gosu::fps() << std::endl;
 		//std::cout << spielfeld.hatPlatzFuerSpielstein(aktiverSpielstein);

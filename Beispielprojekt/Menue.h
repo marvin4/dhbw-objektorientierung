@@ -41,7 +41,7 @@ public:
 	void set_schrift(std::shared_ptr<Gosu::Font> s);
 	void draw();
 	void set_pos(Koord p);
-	void resize(int hoehe,int breite);
+	void resize(int hoehe,int breite,int laenge);
 private:
 	void text(std::string s);
 	void text(std::string s,Gosu::Color c);
