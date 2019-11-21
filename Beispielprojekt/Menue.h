@@ -15,7 +15,10 @@ struct Farbschema {
 	};
 };
 struct Design {
-	std::string name;
+	std::string name="eigen";
+	int hintergrund=0;
+	Farbschema* farbschema=nullptr;
+	Gosu::Color textfarbe = Gosu::Color::BLACK;
 };
 
 class Menue
