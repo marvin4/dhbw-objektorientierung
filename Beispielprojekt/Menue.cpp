@@ -5,13 +5,13 @@ const std::string SpielendeNachricht="Spiel zu Ende";
 void Menue::text(std::string s)
 {
 	Gosu::Color c = this->textfarbe;
-	this->schrift->draw_text(s, pos.x, pos.y, 5, this->scale, this->scale, c);
+	this->schrift->draw_text(s, pos.x, pos.y, 5, 1,1, c);
 	this->pos.y = int(this->pos.y + 40 * this->scale);
 }
 
 void Menue::text(std::string s,Gosu::Color c)
 {
-	this->schrift->draw_text(s,pos.x, pos.y,5, this->scale, this->scale,c);
+	this->schrift->draw_text(s,pos.x, pos.y,5,1,1,c);
 	this->pos.y = int(this->pos.y + 40 *this->scale);
 }
 
@@ -49,10 +49,10 @@ Status Menue::get_vStatus()
 
 
 
-void Menue::set_schrift(std::shared_ptr<Gosu::Font> s)
-{
-	this->schrift = s;
-}
+//void Menue::set_schrift(std::shared_ptr<Gosu::Font> s)
+//{
+//	this->schrift = s;
+//}
 
 void Menue::draw()
 {
@@ -84,7 +84,7 @@ void Menue::draw()
 		this->text("E: Einstellungen");
 		this->text("R: neues Spiel");
 		this->text("Enter: neues Spiel");
-		text_scale = int(this->spielfeldLaenge / this->schrift->text_width(SpielendeNachricht));
+		text_scale =int(this->spielfeldLaenge / this->schrift->text_width(SpielendeNachricht));
 		//this->schrift->draw_text_rel(SpielendeNachricht,this->spielfeldLaenge/2,this->spielfeldLaenge/2,5,0.5,0.5,text_scale,text_scale,Gosu::interpolate(this->textHervorheben,Gosu::Color(0x70d00000)),Gosu::AM_INTERPOLATE);
 		Gosu::Graphics::transform(Gosu::rotate(this->winkel, this->spielfeldLaenge / 2, this->spielfeldLaenge / 2), [&] {this->schrift->draw_text_rel(SpielendeNachricht, this->spielfeldLaenge / 2, this->spielfeldLaenge / 2, 5, 0.5, 0.5, text_scale, text_scale, Gosu::interpolate(this->textHervorheben, Gosu::Color(0x70d00000)), Gosu::AM_INTERPOLATE); });
 		break;
@@ -105,17 +105,24 @@ void Menue::resize(int hoehe, int breite,int laenge)
 	this->windowBreite = breite;
 	this->spielfeldLaenge = laenge;
 	if (abs(breite-hoehe)>Gosu::available_width()/10) {
-	if (breite > hoehe) {
-		this->menueBreite = breite - laenge;
-		this->menueHoehe = hoehe;
-	}
-	else {
-		this->menueHoehe = hoehe - laenge;
-		this->menueBreite = breite;
-	}
-	}
-	else {
+		if (breite > hoehe) {//Menue links von Spielfeld
+			this->menueBreite = breite - laenge;
+			this->menueHoehe = hoehe;
+			this->zeilenBreite = menueBreite;
+			this->pos.x = laenge;
+			this->pos.y = 0;
+			this->schrift = std::make_unique<Gosu::Font>(Gosu::Font(zeilenBreite/12));
 
+		}
+		else {//Menue ueber Spielfeld
+			this->menueHoehe = hoehe - laenge;
+			this->menueBreite = breite;
+			this->pos.x = 0;
+			this->pos.y = 0;
+		}
+	}
+	else {
+		this->overlay = true;
 	}
 
 }

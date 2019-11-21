@@ -24,7 +24,7 @@ class GameWindow : public Gosu::Window
 	AktiverSpielstein aktiverSpielstein;
 	//Gosu::Font font;
 	//Gosu::Image hintergrund;
-	std::shared_ptr<Gosu::Font> ptr_font;
+	//std::shared_ptr<Gosu::Font> ptr_font;
 	std::vector<std::shared_ptr<Gosu::Image>>hintergruende;
 	std::shared_ptr<Gosu::Image>ptr_hintergrund;
 	std::vector<std::string> pfade = {"media/Unterwasser1920x1080.png","media/Holz1920x1080.png"};
@@ -37,14 +37,15 @@ public:
 		set_caption("Testspiel");
 		hoehePxlSpielfeld = (std::min(width(), height())- (std::min(width(), height())%SPIELFELD_BREITE));
 		hoehePxlAbschnitt = (hoehePxlSpielfeld / SPIELFELD_BREITE);
+		menue.resize(height(),width(),hoehePxlSpielfeld);
 		spielfeld.formen = formen4;
 		spielfeld.reset();
-		ptr_font = std::make_shared<Gosu::Font>(Gosu::Font(20));
+		//ptr_font = std::make_shared<Gosu::Font>(Gosu::Font(20));
 		for (std::string elem : pfade) {
 			hintergruende.push_back(std::make_shared<Gosu::Image>(Gosu::Image(elem)));
 		}
 		ptr_hintergrund = hintergruende.at(menue.hintergrund);
-		menue.set_schrift(ptr_font);
+		//menue.set_schrift(ptr_font);
 	}
 	
 	// wird bis zu 60x pro Sekunde aufgerufen.
@@ -66,9 +67,9 @@ public:
 			spielfeld.draw(this->hoehePxlAbschnitt);
 			aktiverSpielstein.draw(this->hoehePxlAbschnitt);
 			menue.draw();
-			ptr_font->draw_text("Spielzeit: " + std::to_string(int(spielfeld.dauer() / 60)) + "min " + std::to_string(int(spielfeld.dauer()) % 60) + "s", hoehePxlSpielfeld + 20*menue.scale, 20+menue.scale*50, 5, menue.scale, menue.scale, Gosu::Color::BLACK);
-			ptr_font->draw_text("Punktestand: " + std::to_string(spielfeld.get_score()), hoehePxlSpielfeld + 20*menue.scale, 20+menue.scale*100, 5, menue.scale, menue.scale, Gosu::Color::BLACK);
-			ptr_font->draw_text("Platzierte Teile: " + std::to_string(spielfeld.get_anzPlatzSpielsteine()), hoehePxlSpielfeld + 20*menue.scale, 20+150*menue.scale, 5, menue.scale, menue.scale, Gosu::Color::BLACK);
+			menue.schrift->draw_text("Spielzeit: " + std::to_string(int(spielfeld.dauer() / 60)) + "min " + std::to_string(int(spielfeld.dauer()) % 60) + "s", hoehePxlSpielfeld + 10*menue.scale, menue.scale*(40), 5, 1, 1, Gosu::Color::BLACK);
+			menue.schrift->draw_text("Punkte: " + std::to_string(spielfeld.get_score()), hoehePxlSpielfeld + 10*menue.scale, menue.scale*110, 5, 1, 1, Gosu::Color::BLACK);
+			menue.schrift->draw_text("Platzierte Teile: " + std::to_string(spielfeld.get_anzPlatzSpielsteine()), hoehePxlSpielfeld + 10*menue.scale, 160*menue.scale, 5, 1, 1, Gosu::Color::BLACK);
 		
 	}
 

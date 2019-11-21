@@ -5,7 +5,7 @@
 
 enum Status
 {
-	inaktiv,aktiv,einstellungen,spielende
+	inaktiv,aktiv,einstellungen,spielende,overlay
 };
 
 struct Farbschema {
@@ -20,13 +20,14 @@ struct Design {
 
 class Menue
 {
-	int menueHoehe=600, menueBreite=200;
+	int menueHoehe=600, menueBreite=200,zeilenBreite=1;
 	int winkel;
 	//Status status=einstellungen;
 	Status status = einstellungen;
-	std::shared_ptr<Gosu::Font> schrift=nullptr;
+	
 	Koord pos = {0,0};
 	Status vStatus = aktiv;
+	bool overlay = false;
 public:
 	double scale=1;
 	void update();
@@ -38,7 +39,8 @@ public:
 	Status get_vStatus();
 	//bool set_windowSize(unsigned int maxHoehe, unsigned int maxBreite, unsigned int hoehe = 600, unsigned int breite = 800);//not needed anymore
 	/*Menue();*/
-	void set_schrift(std::shared_ptr<Gosu::Font> s);
+	std::unique_ptr<Gosu::Font> schrift=nullptr;
+	//void set_schrift(std::shared_ptr<Gosu::Font> s);
 	void draw();
 	void set_pos(Koord p);
 	void resize(int hoehe,int breite,int laenge);
