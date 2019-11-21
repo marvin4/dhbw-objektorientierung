@@ -45,7 +45,7 @@ class Spielfeld
 	
 	Gosu::Image bild;
 	std::array<std::array<Feld,SPIELFELD_BREITE>,SPIELFELD_BREITE> zustand;
-	int64_t score;
+	int score;
 	time_t startzeit;
 	Koord refpos = {0,0};//obere linke Ecke
 	int anzPlatzSpielsteine;

@@ -18,6 +18,7 @@ class GameWindow : public Gosu::Window
 {
 	int hoehePxlSpielfeld;
 	int hoehePxlAbschnitt;
+	double scaleHintergrund=1;
 	//int hintergrund = 0;
 	Menue menue;
 	Spielfeld spielfeld;
@@ -38,6 +39,7 @@ public:
 		hoehePxlSpielfeld = (std::min(width(), height())- (std::min(width(), height())%SPIELFELD_BREITE));
 		hoehePxlAbschnitt = (hoehePxlSpielfeld / SPIELFELD_BREITE);
 		menue.resize(height(),width(),hoehePxlSpielfeld);
+		scaleHintergrund = std::max(width() / 1920.0, height() / 1080.0);
 		spielfeld.formen = formen4;
 		spielfeld.reset();
 		//ptr_font = std::make_shared<Gosu::Font>(Gosu::Font(20));
@@ -57,19 +59,19 @@ public:
 		//hoehePxlAbschnitt = (hoehePxlSpielfeld / SPIELFELD_BREITE);
 		//hintergrund.draw(0, 0, 0,double(width())/double(hintergrund.width()),double(height())/double(hintergrund.height()));//ohne pointer
 		//ptr_hintergrund->draw(0, 0, 0, double(width()) / double(ptr_hintergrund->width()), double(height()) / double(ptr_hintergrund->height()));mit skalierung
-		ptr_hintergrund->draw(0,0, 0, 1.0,1.0);
-		menue.scale = double(width() - hoehePxlSpielfeld) / 200.0;
-		menue.set_pos({int(hoehePxlSpielfeld+20*menue.scale),int(20+menue.scale*200)});
-		menue.windowBreite = width();
-		menue.windowHoehe=height();
-		menue.spielfeldLaenge = hoehePxlSpielfeld;
-			Gosu::Graphics::draw_rect(0, 0, hoehePxlSpielfeld, hoehePxlSpielfeld, Gosu::Color(0x20000000), 1, Gosu::AM_INTERPOLATE);
-			spielfeld.draw(this->hoehePxlAbschnitt);
-			aktiverSpielstein.draw(this->hoehePxlAbschnitt);
-			menue.draw();
-			menue.schrift->draw_text("Spielzeit: " + std::to_string(int(spielfeld.dauer() / 60)) + "min " + std::to_string(int(spielfeld.dauer()) % 60) + "s", hoehePxlSpielfeld + 10*menue.scale, menue.scale*(40), 5, 1, 1, Gosu::Color::BLACK);
-			menue.schrift->draw_text("Punkte: " + std::to_string(spielfeld.get_score()), hoehePxlSpielfeld + 10*menue.scale, menue.scale*110, 5, 1, 1, Gosu::Color::BLACK);
-			menue.schrift->draw_text("Platzierte Teile: " + std::to_string(spielfeld.get_anzPlatzSpielsteine()), hoehePxlSpielfeld + 10*menue.scale, 160*menue.scale, 5, 1, 1, Gosu::Color::BLACK);
+		ptr_hintergrund->draw(0,0, 0, scaleHintergrund,scaleHintergrund);
+		//menue.scale = double(width() - hoehePxlSpielfeld) / 200.0;
+		//menue.set_pos({int(hoehePxlSpielfeld+10*menue.scale),int(20+menue.scale*200)});
+		//menue.windowBreite = width();
+		//menue.windowHoehe=height();
+		//menue.spielfeldLaenge = hoehePxlSpielfeld;
+		Gosu::Graphics::draw_rect(0, 0, hoehePxlSpielfeld, hoehePxlSpielfeld, Gosu::Color(0x20000000), 1, Gosu::AM_INTERPOLATE);
+		spielfeld.draw(this->hoehePxlAbschnitt);
+		aktiverSpielstein.draw(this->hoehePxlAbschnitt);
+		menue.draw(int(spielfeld.dauer()),spielfeld.get_score(),spielfeld.get_anzPlatzSpielsteine());
+			/*menue.schrift->draw_text("Spielzeit: " + std::to_string(int(spielfeld.dauer() / 60)) + "min " + std::to_string(int(spielfeld.dauer()) % 60) + "s", hoehePxlSpielfeld + 10*menue.scale, menue.scale*(10), 5, 1, 1, Gosu::Color::BLACK);
+			menue.schrift->draw_text("Punkte: " + std::to_string(spielfeld.get_score()), hoehePxlSpielfeld + 10*menue.scale, menue.scale*(30*1+10), 5, 1, 1, Gosu::Color::BLACK);
+			menue.schrift->draw_text("Platzierte Teile: " + std::to_string(spielfeld.get_anzPlatzSpielsteine()), hoehePxlSpielfeld + 10*menue.scale, (30*2+10)*menue.scale, 5, 1, 1, Gosu::Color::BLACK);*/
 		
 	}
 
@@ -79,6 +81,9 @@ public:
 		if (!(this->height() == this->menue.windowHoehe && this->width() == this->menue.windowBreite)) {//Falls sich die Fenstergroesse geaendert hat 
 			hoehePxlSpielfeld = (std::min(width(), height()) - (std::min(width(), height()) % SPIELFELD_BREITE));
 			hoehePxlAbschnitt = (hoehePxlSpielfeld / SPIELFELD_BREITE);
+			scaleHintergrund = std::max(width() / 1920.0, height() / 1080.0);
+			//menue.scale = double(width() - hoehePxlSpielfeld) / 200.0;
+			//menue.set_pos({int(hoehePxlSpielfeld+10*menue.scale),int(20+menue.scale*200)});
 			menue.resize(height(), width(),hoehePxlSpielfeld);
 		}
 		//std::cout << Gosu::fps() << std::endl;

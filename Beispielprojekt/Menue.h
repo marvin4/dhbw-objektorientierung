@@ -25,7 +25,8 @@ class Menue
 	//Status status=einstellungen;
 	Status status = einstellungen;
 	
-	Koord pos = {0,0};
+	Koord text_pos = {0,0};
+	Koord pos= { 0,0 };
 	Status vStatus = aktiv;
 	bool overlay = false;
 public:
@@ -41,8 +42,8 @@ public:
 	/*Menue();*/
 	std::unique_ptr<Gosu::Font> schrift=nullptr;
 	//void set_schrift(std::shared_ptr<Gosu::Font> s);
-	void draw();
-	void set_pos(Koord p);
+	void draw(int spielzeit ,int punktzahl,int anzahlTeile);
+	void set_text_pos(int y,int x);
 	void resize(int hoehe,int breite,int laenge);
 private:
 	void text(std::string s);
